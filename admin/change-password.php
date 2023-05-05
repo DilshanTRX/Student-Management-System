@@ -1,6 +1,7 @@
 
 <?php
 session_start();
+//testttt
 include('includes/config.php');
 if(strlen($_SESSION['alogin'])==0)
     {   

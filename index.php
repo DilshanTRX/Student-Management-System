@@ -1,5 +1,6 @@
 <?php
 session_start();
+//test3
 error_reporting(1);
 include("includes/config.php");
 if(isset($_POST['submit']))

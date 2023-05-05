@@ -14,6 +14,4 @@ echo "<span style='color:red'> Student with this Regno Already Registered.</span
 
 }
 }
-
-
 ?>

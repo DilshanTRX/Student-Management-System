@@ -1,30 +1,26 @@
-`<?php
+<?php
 session_start();
 include('includes/config.php');
-if(strlen($_SESSION['alogin'])==0)
-    {   
-header('location:index.php');
-}
-else{
+if(strlen($_SESSION['alogin'])==0) {
+    header('location:index.php');
+} else {
 
-if(isset($_POST['submit']))
-{
-$lecturername=$_POST['lecturername'];
-$department=$_POST['department'];
-$coursename=$_POST['coursename'];
-$ret=mysqli_query($bd, "insert into lecturer(lecturername,department,coursename) values('$lecturername','$department','$coursename')");
-if($ret)
-{
-$_SESSION['msg']="Lecturer Details Successfully Added !!";
-echo "Lecturer Details Successfully Added !!";
-}
-else
-{
-  $_SESSION['msg']="Error : Lecturer Details not Added";
-  echo "Error:".mysqli_error($bd);
-}
-}
-?>
+
+    if(isset($_POST['submit'])) {
+        $lecturername=$_POST['lecturername'];
+        $department=$_POST['department'];
+        $coursename=$_POST['coursename'];
+        $ret=mysqli_query($bd, "insert into lecturer(name,department_id,course_id) values('$lecturername','$department','$coursename')");
+        echo $ret;
+        if($ret) {
+            $_SESSION['msg']="Lecturer Details Successfully Added !!";
+            echo "Lecturer Details Successfully Added !!";
+        } else {
+            $_SESSION['msg']="Error : Lecturer Details not Added";
+            echo "Error:".mysqli_error($bd);
+        }
+    }
+    ?>
 
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -42,11 +38,10 @@ else
 <body>
 <?php include('includes/header.php');?>
     
-<?php if($_SESSION['alogin']!="")
-{
- include('includes/menubar.php');
+<?php if($_SESSION['alogin']!="") {
+    include('includes/menubar.php');
 }
- ?>
+    ?>
    
     <div class="content-wrapper">
         <div class="container">
@@ -71,18 +66,31 @@ else
     <label for="lecturername">Lecturer Name  </label>
     <input type="text" class="form-control" id="lecturername" name="lecturername" placeholder="Lecturer Name" required />
   </div>
-
  <div class="form-group">
     <label for="department">Department   </label>
-    <input type="text" class="form-control" id="department" name="department" onBlur="userAvailability()" placeholder="Department" required />
-     <span id="user-availability-status1" style="font-size:12px;">
+    <select name="department" id="department" class="form-control" required>
+      <option value="">Select a department</option>
+        <?php
+
+        $sql = mysqli_query($bd, "select id,department from department");
+
+    while ($row = mysqli_fetch_array($sql)) {
+        echo'<option value="'.$row[0].'">'.$row[1].'</option>';
+    }
+    ?>
+    </select>
   </div>
-
-
-  <div class="form-group">
-    <label for="coursename">Course Name  </label>
-    <input type="text" class="form-control" id="coursename" name="coursename" onBlur="userAvailability()" placeholder="Course Name" required />
-     <span id="user-availability-status1" style="font-size:12px;">
+ <div class="form-group">
+    <label for="coursename">Course   </label>
+    <select name="coursename" id="coursename" class="form-control"  required>
+      <option value="">Select a course</option>
+        <?php
+        $sql = mysqli_query($bd, "select id,courseName from course");
+    while ($row = mysqli_fetch_array($sql)) {
+        echo'<option value="'.$row[0].'">'.$row[1].'</option>';
+    }
+    ?>
+    </select>
   </div>
 
  <button type="submit" name="submit" id="submit" class="btn btn-default">Submit</button>
@@ -92,7 +100,57 @@ else
                     </div>
                   
                 </div>
+                <div class="col-md-12">
 
+<div class="panel panel-default">
+    <div class="panel-heading">
+        Manage Lecturers
+    </div>
+
+    <div class="panel-body">
+        <div class="table-responsive table-bordered">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Name</th>
+                        <th>Creation Date</th>
+                        <th>Updation Date</th>
+                        <th>Course ID</th>
+                        <th>Department ID</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php
+                       $sql = mysqli_query($bd, "select * from lecturer");
+    $cnt = 1;
+    while ($row = mysqli_fetch_array($sql)) {
+        ?>
+
+
+                        <tr>
+                            <td><?php echo htmlentities($row['id']);?></td>
+                            <td><?php echo htmlentities($row['name']); ?></td>
+                            <td><?php echo htmlentities($row['created_date']); ?></td>
+                            <td><?php echo htmlentities($row['update_date']); ?></td>
+                            <td><?php echo htmlentities($row['course_id']); ?></td>
+                            <td><?php echo htmlentities($row['department_id']); ?></td>
+                            <td>
+                                <a href="semester.php?id=<?php echo $row['id'] ?>&del=delete" onClick="return confirm('Are you sure you want to delete?')">
+                                    <button class="btn btn-danger">Delete</button>
+                                </a>
+                            </td>
+                        </tr>
+                    <?php
+    } ?>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+</div>
             </div>
 
 
@@ -104,7 +162,7 @@ else
   <?php include('includes/footer.php');?>
     <script src="assets/js/jquery-1.11.1.js"></script>
     <script src="assets/js/bootstrap.js"></script>
-<script>
+<!-- <script>
 function userAvailability() {
 $("#loaderIcon").show();
 jQuery.ajax({
@@ -118,7 +176,7 @@ $("#loaderIcon").hide();
 error:function (){}
 });
 }
-</script>
+</script> -->
 
 
 </body>

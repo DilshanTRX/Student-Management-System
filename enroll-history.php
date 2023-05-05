@@ -1,5 +1,6 @@
 <?php
 session_start();
+//test
 include('includes/config.php');
 if(strlen($_SESSION['login'])==0)
     {   

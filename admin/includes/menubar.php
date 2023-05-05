@@ -4,7 +4,7 @@
                 <div class="col-md-12">
                     <div class="navbar-collapse collapse ">
                         <ul id="menu-top" class="nav navbar-nav navbar-right col-12">
-                            <li><a href="session.php">Session</a></li>
+                            <li><a href="year.php">Year</a></li>
                             <li><a href="semester.php">Semester </a></li>
                             <li><a   href="department.php">Department</a></li>
                              <li><a href="course.php">Course</a></li>

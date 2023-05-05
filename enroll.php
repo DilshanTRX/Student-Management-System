@@ -1,34 +1,28 @@
 <?php
 session_start();
 include('includes/config.php');
-if(strlen($_SESSION['login'])==0 or strlen($_SESSION['pcode'])==0)
-    {   
-header('location:index.php');
-}
-else{
+if(strlen($_SESSION['login'])==0 or strlen($_SESSION['pcode'])==0) {
+    header('location:index.php');
+} else {
 
-if(isset($_POST['submit']))
-{
-$studentregno=$_POST['studentregno'];
-$studentindexno=$_POST['studentindexno'];
-$session=$_POST['session'];
-$dept=$_POST['department'];
-$level=$_POST['level'];
-$course=$_POST['course'];
-$sem=$_POST['sem'];
-$ret=mysqli_query($bd, "insert into courseenrolls(studentRegno,studentindexno,session,department,level,course,semester) values('$studentregno','$studentindexno','$session','$dept','$level','$course','$sem')");
-if($ret)
-{
-$_SESSION['msg']="Enroll Successfully !!";
-echo "Enroll Successfully !!";
-}
-else
-{
-  $_SESSION['msg']="Error : Not Enroll";
-  echo "Error:".mysqli_error($bd);
-}
-}
-?>
+    if(isset($_POST['submit'])) {
+        $studentregno=$_POST['studentregno'];
+        $studentindexno=$_POST['studentindexno'];
+        $session=$_POST['session'];
+        $dept=$_POST['department'];
+        $level=$_POST['level'];
+        $course=$_POST['course'];
+        $sem=$_POST['sem'];
+        $ret=mysqli_query($bd, "insert into courseenrolls(studentRegno,studentindexno,session,department,level,course,semester) values('$studentregno','$studentindexno','$session','$dept','$level','$course','$sem')");
+        if($ret) {
+            $_SESSION['msg']="Enroll Successfully !!";
+            echo "Enroll Successfully !!";
+        } else {
+            $_SESSION['msg']="Error : Not Enroll";
+            echo "Error:".mysqli_error($bd);
+        }
+    }
+    ?>
 
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -46,11 +40,10 @@ else
 <body>
 <?php include('includes/header.php');?>
     <!-- LOGO HEADER END-->
-<?php if($_SESSION['login']!="")
-{
- include('includes/menubar.php');
+<?php if($_SESSION['login']!="") {
+    include('includes/menubar.php');
 }
- ?>
+    ?>
     <!-- MENU SECTION END-->
     <div class="content-wrapper">
         <div class="container">
@@ -68,9 +61,8 @@ else
                         </div>
 <font color="green" align="center"><?php echo htmlentities($_SESSION['msg']);?><?php echo htmlentities($_SESSION['msg']="");?></font>
 <?php $sql=mysqli_query($bd, "select * from students where StudentRegno='".$_SESSION['login']."'");
-$cnt=1;
-while($row=mysqli_fetch_array($sql))
-{ ?>
+    $cnt=1;
+    while($row=mysqli_fetch_array($sql)) { ?>
 
                         <div class="panel-body">
                        <form name="dept" method="post" enctype="multipart/form-data">
@@ -82,11 +74,7 @@ while($row=mysqli_fetch_array($sql))
  <div class="form-group">
     <label for="studentregno">Student Reg No   </label>
     <input type="text" class="form-control" id="studentregno" name="studentregno" value="<?php echo htmlentities($row['StudentRegno']);?>"  placeholder="Student Reg no" readonly />
-    
   </div>
-
-
-
 <div class="form-group">
     <label for="studentindexno">Student Index No  </label>
     <input type="text" class="form-control" id="studentindexno" name="studentindexno" readonly value="<?php echo htmlentities($row['studentindexno']);?>" required />
@@ -94,7 +82,7 @@ while($row=mysqli_fetch_array($sql))
 
 <div class="form-group">
     <label for="studentindexno">Student Photo  </label>
-   <?php if($row['studentPhoto']==""){ ?>
+   <?php if($row['studentPhoto']=="") { ?>
    <img src="studentphoto/noimage.png" width="200" height="200"><?php } else {?>
    <img src="studentphoto/<?php echo htmlentities($row['studentPhoto']);?>" width="200" height="200">
    <?php } ?>
@@ -105,11 +93,10 @@ while($row=mysqli_fetch_array($sql))
     <label for="Session">Session  </label>
     <select class="form-control" name="session" required="required">
    <option value="">Select Session</option>   
-   <?php 
-$sql=mysqli_query($bd, "select * from session");
-while($row=mysqli_fetch_array($sql))
-{
-?>
+   <?php
+    $sql=mysqli_query($bd, "select * from session");
+    while($row=mysqli_fetch_array($sql)) {
+        ?>
 <option value="<?php echo htmlentities($row['id']);?>"><?php echo htmlentities($row['session']);?></option>
 <?php } ?>
 
@@ -122,11 +109,10 @@ while($row=mysqli_fetch_array($sql))
     <label for="Department">Department  </label>
     <select class="form-control" name="department" required="required">
    <option value="">Select Depertment</option>   
-   <?php 
-$sql=mysqli_query($bd, "select * from department");
-while($row=mysqli_fetch_array($sql))
-{
-?>
+   <?php
+        $sql=mysqli_query($bd, "select * from department");
+    while($row=mysqli_fetch_array($sql)) {
+        ?>
 <option value="<?php echo htmlentities($row['id']);?>"><?php echo htmlentities($row['department']);?></option>
 <?php } ?>
 
@@ -138,11 +124,10 @@ while($row=mysqli_fetch_array($sql))
     <label for="Level">Level  </label>
     <select class="form-control" name="level" required="required">
    <option value="">Select Level</option>   
-   <?php 
-$sql=mysqli_query($bd, "select * from level");
-while($row=mysqli_fetch_array($sql))
-{
-?>
+   <?php
+        $sql=mysqli_query($bd, "select * from level");
+    while($row=mysqli_fetch_array($sql)) {
+        ?>
 <option value="<?php echo htmlentities($row['id']);?>"><?php echo htmlentities($row['level']);?></option>
 <?php } ?>
 
@@ -153,11 +138,10 @@ while($row=mysqli_fetch_array($sql))
     <label for="Semester">Semester  </label>
     <select class="form-control" name="sem" required="required">
    <option value="">Select Semester</option>   
-   <?php 
-$sql=mysqli_query($bd, "select * from semester");
-while($row=mysqli_fetch_array($sql))
-{
-?>
+   <?php
+        $sql=mysqli_query($bd, "select * from semester");
+    while($row=mysqli_fetch_array($sql)) {
+        ?>
 <option value="<?php echo htmlentities($row['id']);?>"><?php echo htmlentities($row['semester']);?></option>
 <?php } ?>
 
@@ -169,11 +153,10 @@ while($row=mysqli_fetch_array($sql))
     <label for="Course">Course  </label>
     <select class="form-control" name="course" id="course" onBlur="courseAvailability()" required="required">
    <option value="">Select Course</option>   
-   <?php 
-$sql=mysqli_query($bd ,"select * from course");
-while($row=mysqli_fetch_array($sql))
-{
-?>
+   <?php
+        $sql=mysqli_query($bd, "select * from course");
+    while($row=mysqli_fetch_array($sql)) {
+        ?>
 <option value="<?php echo htmlentities($row['id']);?>"><?php echo htmlentities($row['courseName']);?></option>
 <?php } ?>
     </select> 

@@ -5,6 +5,7 @@ if(strlen($_SESSION['alogin'])==0) {
     header('location:index.php');
 } else {
 
+
     if(isset($_POST['submit'])) {
         $lecturername=$_POST['lecturername'];
         $department=$_POST['department'];
@@ -45,12 +46,12 @@ if(strlen($_SESSION['alogin'])==0) {
     <div class="content-wrapper">
         <div class="container">
               <div class="row">
-                <div class="col-md-3"></div>
                     <div class="col-md-12">
                         <h1 class="page-head-line">Lecturer Details  </h1>
                     </div>
                 </div>
-                <div class="row">
+                <div class="row" >
+                  <div class="col-md-3"></div>
                     <div class="col-md-6">
                         <div class="panel panel-default">
                         <div class="panel-heading">
@@ -58,14 +59,13 @@ if(strlen($_SESSION['alogin'])==0) {
                         </div>
 <font color="green" align="center"><?php echo htmlentities($_SESSION['msg']);?><?php echo htmlentities($_SESSION['msg']="");?></font>
 
-              
-                      <div class="panel-body">
-                       <form name="dept" method="post">
-                <div class="form-group">
-                <label for="lecturername">Lecturer Name  </label>
-                <input type="text" class="form-control" id="lecturername" name="lecturername" placeholder="Lecturer Name" required />
-              </div>
 
+                        <div class="panel-body">
+                       <form name="dept" method="post">
+   <div class="form-group">
+    <label for="lecturername">Lecturer Name  </label>
+    <input type="text" class="form-control" id="lecturername" name="lecturername" placeholder="Lecturer Name" required />
+  </div>
  <div class="form-group">
     <label for="department">Department   </label>
     <select name="department" id="department" class="form-control" required>
@@ -94,56 +94,89 @@ if(strlen($_SESSION['alogin'])==0) {
   </div>
 
  <button type="submit" name="submit" id="submit" class="btn btn-default">Submit</button>
-
 </form>
+                            </div>
+                            </div>
+                    </div>
+                  
+                </div>
+                <div class="col-md-12">
+
+<div class="panel panel-default">
+    <div class="panel-heading">
+        Manage Lecturers
+    </div>
+
+    <div class="panel-body">
+        <div class="table-responsive table-bordered">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Name</th>
+                        <th>Creation Date</th>
+                        <th>Updation Date</th>
+                        <th>Course ID</th>
+                        <th>Department ID</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php
+                       $sql = mysqli_query($bd, "select * from lecturer");
+    $cnt = 1;
+    while ($row = mysqli_fetch_array($sql)) {
+        ?>
+
+
+                        <tr>
+                            <td><?php echo htmlentities($row['id']);?></td>
+                            <td><?php echo htmlentities($row['name']); ?></td>
+                            <td><?php echo htmlentities($row['created_date']); ?></td>
+                            <td><?php echo htmlentities($row['update_date']); ?></td>
+                            <td><?php echo htmlentities($row['course_id']); ?></td>
+                            <td><?php echo htmlentities($row['department_id']); ?></td>
+                            <td>
+                                <a href="semester.php?id=<?php echo $row['id'] ?>&del=delete" onClick="return confirm('Are you sure you want to delete?')">
+                                    <button class="btn btn-danger">Delete</button>
+                                </a>
+                            </td>
+                        </tr>
+                    <?php
+    } ?>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+</div>
+            </div>
 
 
 
 
-  </div>
-  </div>
-  </div>
-  </div>
-  <table class="table">
-  <thead>
-    <tr>
-      <th scope="col">#</th>
-      <th scope="col">First</th>
-      <th scope="col">Last</th>
-      <th scope="col">Handle</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th scope="row">1</th>
-      <td>Mark</td>
-      <td>Otto</td>
-      <td>@mdo</td>
-    </tr>
-    <tr>
-      <th scope="row">2</th>
-      <td>Jacob</td>
-      <td>Thornton</td>
-      <td>@fat</td>
-    </tr>
-    <tr>
-      <th scope="row">3</th>
-      <td>Larry</td>
-      <td>the Bird</td>
-      <td>@twitter</td>
-    </tr>
-  </tbody>
-</table>
-  </div>
-    
 
+        </div>
+    </div>
   <?php include('includes/footer.php');?>
     <script src="assets/js/jquery-1.11.1.js"></script>
     <script src="assets/js/bootstrap.js"></script>
-<script>
+<!-- <script>
 function userAvailability() {
-
-</script>
+$("#loaderIcon").show();
+jQuery.ajax({
+url: "check_availability.php",
+data:'regno='+$("#department").val(),
+type: "POST",
+success:function(data){
+$("#user-availability-status1").html(data);
+$("#loaderIcon").hide();
+},
+error:function (){}
+});
+}
+</script> -->
 
 
 </body>

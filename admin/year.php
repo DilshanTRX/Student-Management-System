@@ -95,21 +95,21 @@ if(strlen($_SESSION['alogin'])==0) {
                                     <?php
                                     $sql=mysqli_query($bd, "select * from year");
 
-    while($row=mysqli_fetch_array($sql)) {
-        ?>
-                                                                            <tr>
-                                                                                <td><?php echo htmlentities($row['id']);?></td>
-                                                                                <td><?php echo htmlentities($row['year']);?></td>
-                                                                                <td><?php echo htmlentities($row['created_date']);?></td>
-                                                                                <td><?php echo htmlentities($row['update_date']);?></td>
-                                                                                <td>
-                                    <a href="session.php?id=<?php echo $row['id']?>&del=delete" onClick="return confirm('Are you sure you want to delete?')">
-                                                                                <button class="btn btn-danger">Delete</button>
-                                    </a>
-                                                                                </td>
-                                                                            </tr>
+                                    while($row=mysqli_fetch_array($sql)) {
+                                    ?>
+                                    <tr>
+                                        <td><?php echo htmlentities($row['id']);?></td>
+                                        <td><?php echo htmlentities($row['year']);?></td>
+                                        <td><?php echo htmlentities($row['created_date']);?></td>
+                                        <td><?php echo htmlentities($row['update_date']);?></td>
+                                        <td>
+                                            <a href="year.php?id=<?php echo $row['id']?>&del=delete" onClick="return confirm('Are you sure you want to delete?')">
+                                                <button class="btn btn-danger">Delete</button>
+                                            </a>
+                                            </td>
+                                        </tr>
                                     <?php
-    } ?>
+                                    } ?>
                                     </tbody>
                                 </table>
                             </div>

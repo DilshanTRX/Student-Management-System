@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 05, 2023 at 05:05 PM
+-- Generation Time: May 05, 2023 at 05:53 PM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.0.28
 
@@ -45,6 +45,21 @@ INSERT INTO `admin` (`id`, `username`, `password`, `creationDate`, `updationDate
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `attendance`
+--
+
+CREATE TABLE `attendance` (
+  `id` int(255) NOT NULL,
+  `student_id` int(255) NOT NULL,
+  `course_id` int(255) NOT NULL,
+  `date` date DEFAULT NULL,
+  `created_date` date NOT NULL DEFAULT current_timestamp(),
+  `status` bit(1) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `course`
 --
 
@@ -55,15 +70,16 @@ CREATE TABLE `course` (
   `courseUnit` varchar(255) NOT NULL,
   `noofSeats` int(11) NOT NULL,
   `creationDate` timestamp NOT NULL DEFAULT current_timestamp(),
-  `updationDate` varchar(255) NOT NULL
+  `update_date` date DEFAULT NULL,
+  `lecturer` int(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 --
 -- Dumping data for table `course`
 --
 
-INSERT INTO `course` (`id`, `courseCode`, `courseName`, `courseUnit`, `noofSeats`, `creationDate`, `updationDate`) VALUES
-(1, 'C001', 'DEP', '01', 98, '2023-05-02 15:10:51', '');
+INSERT INTO `course` (`id`, `courseCode`, `courseName`, `courseUnit`, `noofSeats`, `creationDate`, `update_date`, `lecturer`) VALUES
+(1, 'C001', 'DEP', '01', 98, '2023-05-02 15:10:51', '0000-00-00', 0);
 
 -- --------------------------------------------------------
 
@@ -73,11 +89,10 @@ INSERT INTO `course` (`id`, `courseCode`, `courseName`, `courseUnit`, `noofSeats
 
 CREATE TABLE `courseenrolls` (
   `id` int(11) NOT NULL,
-  `studentRegno` varchar(255) NOT NULL,
+  `student_id` int(255) NOT NULL,
   `pincode` varchar(255) NOT NULL,
-  `session` int(11) NOT NULL,
+  `year` int(255) NOT NULL,
   `department` int(11) NOT NULL,
-  `level` int(11) NOT NULL,
   `semester` int(11) NOT NULL,
   `course` int(11) NOT NULL,
   `enrollDate` timestamp NOT NULL DEFAULT current_timestamp()
@@ -87,10 +102,10 @@ CREATE TABLE `courseenrolls` (
 -- Dumping data for table `courseenrolls`
 --
 
-INSERT INTO `courseenrolls` (`id`, `studentRegno`, `pincode`, `session`, `department`, `level`, `semester`, `course`, `enrollDate`) VALUES
-(1, 'S001', '179715', 1, 1, 1, 1, 1, '2023-05-02 15:18:28'),
-(2, 'S002', '785606', 1, 1, 1, 4, 1, '2023-05-03 17:23:30'),
-(3, 'S002', '785606', 1, 2, 1, 5, 1, '2023-05-03 17:24:09');
+INSERT INTO `courseenrolls` (`id`, `student_id`, `pincode`, `year`, `department`, `semester`, `course`, `enrollDate`) VALUES
+(1, 0, '179715', 1, 1, 1, 1, '2023-05-02 15:18:28'),
+(2, 0, '785606', 1, 1, 4, 1, '2023-05-03 17:23:30'),
+(3, 0, '785606', 1, 2, 5, 1, '2023-05-03 17:24:09');
 
 -- --------------------------------------------------------
 
@@ -115,24 +130,15 @@ INSERT INTO `department` (`id`, `department`, `creationDate`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `level`
+-- Table structure for table `lecturer`
 --
 
-CREATE TABLE `level` (
+CREATE TABLE `lecturer` (
   `id` int(11) NOT NULL,
-  `level` varchar(255) NOT NULL,
-  `creationDate` timestamp NOT NULL DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
-
---
--- Dumping data for table `level`
---
-
-INSERT INTO `level` (`id`, `level`, `creationDate`) VALUES
-(1, 'Level 1', '2020-06-03 14:03:20'),
-(2, 'Level 2', '2020-06-03 14:03:20'),
-(3, 'Level 3', '2020-06-03 14:03:32'),
-(4, 'Level 4', '2020-06-03 14:03:32');
+  `name` varchar(255) NOT NULL,
+  `created_date` date NOT NULL DEFAULT current_timestamp(),
+  `update_date` date DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -157,25 +163,6 @@ INSERT INTO `semester` (`id`, `semester`, `creationDate`, `updationDate`) VALUES
 (4, 'semester 01', '2023-05-02 17:44:14', ''),
 (5, 'semester 01', '2023-05-02 17:44:18', ''),
 (6, 'semester 01', '2023-05-02 17:44:22', '');
-
--- --------------------------------------------------------
-
---
--- Table structure for table `session`
---
-
-CREATE TABLE `session` (
-  `id` int(11) NOT NULL,
-  `session` varchar(255) NOT NULL,
-  `creationDate` timestamp NOT NULL DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
-
---
--- Dumping data for table `session`
---
-
-INSERT INTO `session` (`id`, `session`, `creationDate`) VALUES
-(1, '1', '2023-05-02 15:10:17');
 
 -- --------------------------------------------------------
 
@@ -208,6 +195,19 @@ INSERT INTO `students` (`StudentRegno`, `studentPhoto`, `password`, `studentName
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `timetable`
+--
+
+CREATE TABLE `timetable` (
+  `id` int(255) NOT NULL,
+  `course_id` int(255) NOT NULL,
+  `date` date NOT NULL DEFAULT current_timestamp(),
+  `created_date` date NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `userlog`
 --
 
@@ -230,6 +230,19 @@ INSERT INTO `userlog` (`id`, `studentRegno`, `userip`, `loginTime`, `logout`, `s
 (3, 'S001', 0x3a3a3100000000000000000000000000, '2023-05-03 13:15:58', '', 1),
 (4, 'S002', 0x3a3a3100000000000000000000000000, '2023-05-03 17:12:42', '', 1);
 
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `year`
+--
+
+CREATE TABLE `year` (
+  `id` int(255) NOT NULL,
+  `year` varchar(255) NOT NULL,
+  `created_date` date NOT NULL DEFAULT current_timestamp(),
+  `update_date` date DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
 --
 -- Indexes for dumped tables
 --
@@ -238,6 +251,13 @@ INSERT INTO `userlog` (`id`, `studentRegno`, `userip`, `loginTime`, `logout`, `s
 -- Indexes for table `admin`
 --
 ALTER TABLE `admin`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `username` (`username`);
+
+--
+-- Indexes for table `attendance`
+--
+ALTER TABLE `attendance`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -256,12 +276,13 @@ ALTER TABLE `courseenrolls`
 -- Indexes for table `department`
 --
 ALTER TABLE `department`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `department` (`department`);
 
 --
--- Indexes for table `level`
+-- Indexes for table `lecturer`
 --
-ALTER TABLE `level`
+ALTER TABLE `lecturer`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -271,21 +292,27 @@ ALTER TABLE `semester`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `session`
---
-ALTER TABLE `session`
-  ADD PRIMARY KEY (`id`);
-
---
 -- Indexes for table `students`
 --
 ALTER TABLE `students`
   ADD PRIMARY KEY (`StudentRegno`);
 
 --
+-- Indexes for table `timetable`
+--
+ALTER TABLE `timetable`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `userlog`
 --
 ALTER TABLE `userlog`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `year`
+--
+ALTER TABLE `year`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -297,6 +324,12 @@ ALTER TABLE `userlog`
 --
 ALTER TABLE `admin`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT for table `attendance`
+--
+ALTER TABLE `attendance`
+  MODIFY `id` int(255) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `course`
@@ -317,10 +350,10 @@ ALTER TABLE `department`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
--- AUTO_INCREMENT for table `level`
+-- AUTO_INCREMENT for table `lecturer`
 --
-ALTER TABLE `level`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+ALTER TABLE `lecturer`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `semester`
@@ -329,16 +362,22 @@ ALTER TABLE `semester`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
--- AUTO_INCREMENT for table `session`
+-- AUTO_INCREMENT for table `timetable`
 --
-ALTER TABLE `session`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+ALTER TABLE `timetable`
+  MODIFY `id` int(255) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `userlog`
 --
 ALTER TABLE `userlog`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- AUTO_INCREMENT for table `year`
+--
+ALTER TABLE `year`
+  MODIFY `id` int(255) NOT NULL AUTO_INCREMENT;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

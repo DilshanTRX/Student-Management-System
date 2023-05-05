@@ -1,14 +1,13 @@
 -- phpMyAdmin SQL Dump
--- version 4.8.3
+-- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 03, 2020 at 04:03 PM
--- Server version: 10.1.37-MariaDB
--- PHP Version: 7.2.12
+-- Generation Time: May 05, 2023 at 05:05 PM
+-- Server version: 10.4.28-MariaDB
+-- PHP Version: 8.0.28
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-SET AUTOCOMMIT = 0;
 START TRANSACTION;
 SET time_zone = "+00:00";
 
@@ -32,9 +31,9 @@ CREATE TABLE `admin` (
   `id` int(11) NOT NULL,
   `username` varchar(255) NOT NULL,
   `password` varchar(255) NOT NULL,
-  `creationDate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `creationDate` timestamp NOT NULL DEFAULT current_timestamp(),
   `updationDate` varchar(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 --
 -- Dumping data for table `admin`
@@ -55,9 +54,16 @@ CREATE TABLE `course` (
   `courseName` varchar(255) NOT NULL,
   `courseUnit` varchar(255) NOT NULL,
   `noofSeats` int(11) NOT NULL,
-  `creationDate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `creationDate` timestamp NOT NULL DEFAULT current_timestamp(),
   `updationDate` varchar(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+
+--
+-- Dumping data for table `course`
+--
+
+INSERT INTO `course` (`id`, `courseCode`, `courseName`, `courseUnit`, `noofSeats`, `creationDate`, `updationDate`) VALUES
+(1, 'C001', 'DEP', '01', 98, '2023-05-02 15:10:51', '');
 
 -- --------------------------------------------------------
 
@@ -74,8 +80,17 @@ CREATE TABLE `courseenrolls` (
   `level` int(11) NOT NULL,
   `semester` int(11) NOT NULL,
   `course` int(11) NOT NULL,
-  `enrollDate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `enrollDate` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+
+--
+-- Dumping data for table `courseenrolls`
+--
+
+INSERT INTO `courseenrolls` (`id`, `studentRegno`, `pincode`, `session`, `department`, `level`, `semester`, `course`, `enrollDate`) VALUES
+(1, 'S001', '179715', 1, 1, 1, 1, 1, '2023-05-02 15:18:28'),
+(2, 'S002', '785606', 1, 1, 1, 4, 1, '2023-05-03 17:23:30'),
+(3, 'S002', '785606', 1, 2, 1, 5, 1, '2023-05-03 17:24:09');
 
 -- --------------------------------------------------------
 
@@ -86,8 +101,16 @@ CREATE TABLE `courseenrolls` (
 CREATE TABLE `department` (
   `id` int(11) NOT NULL,
   `department` varchar(255) NOT NULL,
-  `creationDate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `creationDate` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+
+--
+-- Dumping data for table `department`
+--
+
+INSERT INTO `department` (`id`, `department`, `creationDate`) VALUES
+(1, 'science', '2023-05-02 15:10:35'),
+(2, 'computer', '2023-05-02 17:57:56');
 
 -- --------------------------------------------------------
 
@@ -98,8 +121,8 @@ CREATE TABLE `department` (
 CREATE TABLE `level` (
   `id` int(11) NOT NULL,
   `level` varchar(255) NOT NULL,
-  `creationDate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `creationDate` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 --
 -- Dumping data for table `level`
@@ -120,9 +143,20 @@ INSERT INTO `level` (`id`, `level`, `creationDate`) VALUES
 CREATE TABLE `semester` (
   `id` int(11) NOT NULL,
   `semester` varchar(255) NOT NULL,
-  `creationDate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `updationDate` varchar(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `creationDate` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updationDate` varchar(255) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+
+--
+-- Dumping data for table `semester`
+--
+
+INSERT INTO `semester` (`id`, `semester`, `creationDate`, `updationDate`) VALUES
+(1, 'Sem12', '2023-05-02 15:10:25', ''),
+(2, 'Sem 1', '2023-05-02 17:39:48', ''),
+(4, 'semester 01', '2023-05-02 17:44:14', ''),
+(5, 'semester 01', '2023-05-02 17:44:18', ''),
+(6, 'semester 01', '2023-05-02 17:44:22', '');
 
 -- --------------------------------------------------------
 
@@ -133,8 +167,15 @@ CREATE TABLE `semester` (
 CREATE TABLE `session` (
   `id` int(11) NOT NULL,
   `session` varchar(255) NOT NULL,
-  `creationDate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `creationDate` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+
+--
+-- Dumping data for table `session`
+--
+
+INSERT INTO `session` (`id`, `session`, `creationDate`) VALUES
+(1, '1', '2023-05-02 15:10:17');
 
 -- --------------------------------------------------------
 
@@ -152,9 +193,17 @@ CREATE TABLE `students` (
   `department` varchar(255) NOT NULL,
   `semester` varchar(255) NOT NULL,
   `cgpa` decimal(10,2) NOT NULL,
-  `creationdate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `creationdate` timestamp NOT NULL DEFAULT current_timestamp(),
   `updationDate` varchar(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+
+--
+-- Dumping data for table `students`
+--
+
+INSERT INTO `students` (`StudentRegno`, `studentPhoto`, `password`, `studentName`, `pincode`, `session`, `department`, `semester`, `cgpa`, `creationdate`, `updationDate`) VALUES
+('S001', NULL, '202cb962ac59075b964b07152d234b70', 'dilshan', '373063', '', '', 'sem-01', 0.00, '2023-05-02 18:00:59', ''),
+('S002', NULL, '202cb962ac59075b964b07152d234b70', 'sachin', '785606', '', '', 'sem-01', 0.00, '2023-05-03 17:11:37', '');
 
 -- --------------------------------------------------------
 
@@ -166,10 +215,20 @@ CREATE TABLE `userlog` (
   `id` int(11) NOT NULL,
   `studentRegno` varchar(255) NOT NULL,
   `userip` binary(16) NOT NULL,
-  `loginTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `loginTime` timestamp NOT NULL DEFAULT current_timestamp(),
   `logout` varchar(255) NOT NULL,
   `status` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+
+--
+-- Dumping data for table `userlog`
+--
+
+INSERT INTO `userlog` (`id`, `studentRegno`, `userip`, `loginTime`, `logout`, `status`) VALUES
+(1, 'S001', 0x3a3a3100000000000000000000000000, '2023-05-02 15:13:35', '', 1),
+(2, 'S001', 0x3a3a3100000000000000000000000000, '2023-05-02 18:01:19', '', 1),
+(3, 'S001', 0x3a3a3100000000000000000000000000, '2023-05-03 13:15:58', '', 1),
+(4, 'S002', 0x3a3a3100000000000000000000000000, '2023-05-03 17:12:42', '', 1);
 
 --
 -- Indexes for dumped tables
@@ -243,19 +302,19 @@ ALTER TABLE `admin`
 -- AUTO_INCREMENT for table `course`
 --
 ALTER TABLE `course`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `courseenrolls`
 --
 ALTER TABLE `courseenrolls`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `department`
 --
 ALTER TABLE `department`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `level`
@@ -267,19 +326,19 @@ ALTER TABLE `level`
 -- AUTO_INCREMENT for table `semester`
 --
 ALTER TABLE `semester`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `session`
 --
 ALTER TABLE `session`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `userlog`
 --
 ALTER TABLE `userlog`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

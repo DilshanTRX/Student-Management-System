@@ -1,31 +1,27 @@
 <?php
 session_start();
 include('includes/config.php');
-if(strlen($_SESSION['alogin'])==0)
-    {   
-header('location:index.php');
-}
-else{
-$id=intval($_GET['id']);
-date_default_timezone_set('Asia/Kolkata');
-$currentTime = date( 'd-m-Y h:i:s A', time () );
-if(isset($_POST['submit']))
-{
-$coursecode=$_POST['coursecode'];
-$coursename=$_POST['coursename'];
-$courseunit=$_POST['courseunit'];
-$seatlimit=$_POST['seatlimit'];
-$ret=mysqli_query($bd, "update course set courseCode='$coursecode',courseName='$coursename',courseUnit='$courseunit',noofSeats='$seatlimit',updationDate='$currentTime' where id='$id'");
-if($ret)
-{
-$_SESSION['msg']="Course Updated Successfully !!";
-}
-else
-{
-  $_SESSION['msg']="Error : Course not Updated";
-}
-}
-?>
+if(strlen($_SESSION['alogin'])==0) {
+    header('location:index.php');
+} else {
+    $id=intval($_GET['id']);
+    date_default_timezone_set('Asia/Kolkata');
+    $currentTime = date('d-m-Y h:i:s A', time());
+    if(isset($_POST['submit'])) {
+        $coursecode=$_POST['coursecode'];
+        $coursename=$_POST['coursename'];
+        $courseunit=$_POST['courseunit'];
+        $seatlimit=$_POST['seatlimit'];
+        $ret=mysqli_query($bd, "UPDATE course SET courseName = '$coursename',courseUnit = '$courseunit',noofSeats = '$seatlimit',update_date = '$currentTime' where id = '$id'");
+        if($ret) {
+            $_SESSION['msg']="Course Updated Successfully !!";
+        } else {
+            $_SESSION['msg']="Error : Course not Updated";
+            echo "Error:".mysqli_error($bd);
+
+        }
+    }
+    ?>
 
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -43,11 +39,10 @@ else
 <body>
 <?php include('includes/header.php');?>
     
-<?php if($_SESSION['alogin']!="")
-{
- include('includes/menubar.php');
+<?php if($_SESSION['alogin']!="") {
+    include('includes/menubar.php');
 }
- ?>
+    ?>
    
     <div class="content-wrapper">
         <div class="container">
@@ -70,14 +65,13 @@ else
                        <form name="dept" method="post">
 <?php
 $sql=mysqli_query($bd, "select * from course where id='$id'");
-$cnt=1;
-while($row=mysqli_fetch_array($sql))
-{
-?>
+    $cnt=1;
+    while($row=mysqli_fetch_array($sql)) {
+        ?>
 <p><b>Last Updated at</b> :<?php echo htmlentities($row['updationDate']);?></p>
    <div class="form-group">
     <label for="coursecode">Course Code  </label>
-    <input type="text" class="form-control" id="coursecode" name="coursecode" placeholder="Course Code" value="<?php echo htmlentities($row['courseCode']);?>" required />
+    <input type="text" class="form-control" id="coursecode" name="coursecode" placeholder="Course Code" value="<?php echo htmlentities($row['courseCode']);?>" readonly />
   </div>
 
  <div class="form-group">
@@ -106,11 +100,6 @@ while($row=mysqli_fetch_array($sql))
                 </div>
                 
             </div>
-
-
-
-
-
         </div>
     </div>
     

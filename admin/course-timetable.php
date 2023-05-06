@@ -5,20 +5,30 @@ if (strlen($_SESSION['alogin']) == 0) {
     header('location:index.php');
 } else {
 
-
+    if (isset($_POST['submit'])) {
+        $course = $_POST['course'];
+        $date = $_POST['courseDate'];
+        $time = $_POST['time'];
+        $ret = mysqli_query($bd, "INSERT into timetable(course_id,date,time) values('$course','$date','$time')");
+        if ($ret) {
+            $_SESSION['msg'] = "Course Created Successfully !!";
+        } else {
+            $_SESSION['msg'] = "Error : Course not created";
+        }
+    }
 
     if (isset($_GET['del'])) {
-        mysqli_query($bd, "delete from students where StudentRegno = '" . $_GET['id'] . "'");
+        mysqli_query($bd, "delete from timetable where id = '" . $_GET['id'] . "'");
         $_SESSION['delmsg'] = "Student record deleted !!";
     }
 
-    if (isset($_GET['pass'])) {
-        $password = "12345";
-        $newpass = md5($password);
-        mysqli_query($bd, "update students set password='$newpass' where StudentRegno = '" . $_GET['id'] . "'");
-        $_SESSION['delmsg'] = "Password Reset. New Password is 12345";
-    }
-?>
+    // if (isset($_GET['pass'])) {
+    //     $password = "12345";
+    //     $newpass = md5($password);
+    //     mysqli_query($bd, "update students set password='$newpass' where StudentRegno = '" . $_GET['id'] . "'");
+    //     $_SESSION['delmsg'] = "Password Reset. New Password is 12345";
+    // }
+    ?>
 
     <!DOCTYPE html>
     <html xmlns="http://www.w3.org/1999/xhtml">
@@ -28,10 +38,11 @@ if (strlen($_SESSION['alogin']) == 0) {
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
         <meta name="description" content="" />
         <meta name="author" content="" />
-        <title>Admin | Course</title>
+        <title>Admin | Time table</title>
         <link href="assets/css/bootstrap.css" rel="stylesheet" />
         <link href="assets/css/font-awesome.css" rel="stylesheet" />
         <link href="assets/css/style.css" rel="stylesheet" />
+        
     </head>
 
     <body>
@@ -40,104 +51,109 @@ if (strlen($_SESSION['alogin']) == 0) {
         <?php if ($_SESSION['alogin'] != "") {
             include('includes/menubar.php');
         }
-        ?>
+    ?>
 
         <div class="content-wrapper">
             <div class="container">
                 <div class="row">
                     <div class="col-md-12">
-                        <h1 class="page-head-line">Course </h1>
+                        <h1 class="page-head-line">Time Table </h1>
                     </div>
                 </div>
                 <div class="row">
 
                     <font color="red" align="center"><?php echo htmlentities($_SESSION['delmsg']); ?><?php echo htmlentities($_SESSION['delmsg'] = ""); ?></font>
-         
 
-                        <div class="row">
+
+                    <div class="row">
                         <div class="col-md-12">
-                        <div class="col-md-6">
-                            <select class="form-control col-md-6"  name="course" id="course">
-                            <?php
-                                            $sql = mysqli_query($bd, "select courseCode,courseName from course");
-                                            $cnt = 1;
-                                            while ($row = mysqli_fetch_array($sql)) {
-                                            echo'<option value="">'.$row[1].'</option>';
-                                            }
-                                            ?>
-                            </select>
-                        </div>
-                            <div class="col-md-3">
-                            <input class="form-control col-md-6" type="date" name="courseDate">
-                            </div>
-                            <div class="col-md-3">
-                            <input type="submit" name="submit" value="Search">
-                            </div>
-                                        </div>
-                        </div>
+                            <form name="timetable" method="post">
+                                <div class="col-md-3">
 
-                        <br>
-                        <div class="panel panel-default col-md-12">
-                            <div class="panel-heading">
-                                Student Time Table
-                            </div>
-
-
-                            <div class="panel-body">
-                                <div class="table-responsive table-bordered">
-                                    <table class="table">
-                                        <thead>
-                                            <tr>
-                                                <th>#</th>
-                                                <th>Reg No </th>
-                                                <th>Student Name </th>
-                                                <th> Student Index no </th>
-                                                <th>Reg Date</th>
-                                                <th>Action</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <?php
-                                            $sql = mysqli_query($bd, "select * from students");
-                                            $cnt = 1;
-                                            while ($row = mysqli_fetch_array($sql)) {
-                                            ?>
-
-
-                                                <tr>
-                                                    <td><?php echo $cnt; ?></td>
-                                                    <td><?php echo htmlentities($row['StudentRegno']); ?></td>
-                                                    <td><?php echo htmlentities($row['studentName']); ?></td>
-                                                    <td><?php echo htmlentities($row['studentindexno']); ?></td>
-                                                    <td><?php echo htmlentities($row['creationdate']); ?></td>
-                                                    <td>
-                                                        <a href="manage-students.php?id=<?php echo $row['StudentRegno'] ?>&del=delete" onClick="return confirm('Are you sure you want to delete?')">
-                                                            <button class="btn btn-danger">Delete</button>
-                                                        </a>
-                                                        <a href="manage-students.php?id=<?php echo $row['StudentRegno'] ?>&pass=update" onClick="return confirm('Are you sure you want to reset password?')">
-                                                            <button type="submit" name="submit" id="submit" class="btn btn-default">Reset Password</button>
-                                                        </a>
-                                                    </td>
-                                                </tr>
-                                            <?php
-                                                $cnt++;
-                                            } ?>
-
-
-                                        </tbody>
-                                    </table>
+                                    <select class="form-control col-md-6" name="course" id="course">
+                                        <?php
+                                    $sql = mysqli_query($bd, "select id,courseName from course");
+    $cnt = 1;
+    while ($row = mysqli_fetch_array($sql)) {
+        echo '  <option>Select Course</option>
+                                            <option value="'.$row[0].'">' . $row[1] . '</option>';
+    }
+    ?>
+                                    </select>
                                 </div>
-                            </div>
+                                <div class="col-md-3">
+                                    <input class="form-control col-md-6" type="date" name="courseDate">
+                                </div>
+                                <div class="col-md-3">
+                                    <input class="form-control col-md-6" type="time" name="time">
+                                </div>
+                                <div class="col-md-3">
+                                    <input type="submit" name="submit" value="Save Time Table">
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                    <br>
+                    <div class="panel panel-default col-md-12">
+                        <div class="panel-heading">
+                            Student Time Table
                         </div>
 
+
+                        <div class="panel-body">
+                            <div class="table-responsive table-bordered">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>Course Code </th>
+                                            <th> Course Name </th>
+                                            <th>Course Date</th>
+                                            <th>Course Time</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <?php
+    $sql = mysqli_query($bd, "select timetable.id,course.courseName,timetable.date,course.courseCode,timetable.time from timetable inner join
+                                             course on course.id = timetable.course_id");
+    $cnt = 1;
+    while ($row = mysqli_fetch_array($sql)) {
+        ?>
+
+                                            <tr>
+                                                <td><?php echo $cnt; ?></td>
+                                                <td><?php echo htmlentities($row['courseCode']); ?></td>
+                                                <td><?php echo htmlentities($row['courseName']); ?></td>
+                                                <td><?php echo htmlentities($row['date']); ?></td>
+                                                <td><?php echo htmlentities($row['time']); ?></td>
+                                                <td>
+                                                    <a href="course-timetable.php?id=<?php echo $row['id'] ?>&del=delete" onClick="return confirm('Are you sure you want to delete?')">
+                                                        <button class="btn btn-danger">Delete</button>
+                                                    </a>
+                                                   
+                                                </td>
+                                            </tr>
+                                        <?php
+            $cnt++;
+    } ?>
+
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
                     </div>
+
                 </div>
-
-
-
-
-
             </div>
+
+
+
+
+
+        </div>
         </div>
 
         <?php include('includes/footer.php'); ?>

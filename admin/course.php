@@ -5,20 +5,21 @@ if(strlen($_SESSION['alogin'])==0) {
     header('location:index.php');
 } else {
 
-
     if(isset($_POST['submit'])) {
-        $lecturername=$_POST['lecturername'];
-        $department=$_POST['department'];
+        $coursecode=$_POST['coursecode'];
         $coursename=$_POST['coursename'];
-        $ret=mysqli_query($bd, "insert into lecturer(name,department_id,course_id) values('$lecturername','$department','$coursename')");
-        echo $ret;
+        $courseunit=$_POST['courseunit'];
+        $seatlimit=$_POST['seatlimit'];
+        $ret=mysqli_query($bd, "insert into course(courseCode,courseName,courseUnit,noofSeats) values('$coursecode','$coursename','$courseunit','$seatlimit')");
         if($ret) {
-            $_SESSION['msg']="Lecturer Details Successfully Added !!";
-            echo "Lecturer Details Successfully Added !!";
+            $_SESSION['msg']="Course Created Successfully !!";
         } else {
-            $_SESSION['msg']="Error : Lecturer Details not Added";
-            echo "Error:".mysqli_error($bd);
+            $_SESSION['msg']="Error : Course not created";
         }
+    }
+    if(isset($_GET['del'])) {
+        mysqli_query($bd, "delete from course where id = '".$_GET['id']."'");
+        $_SESSION['delmsg']="Course deleted !!";
     }
     ?>
 
@@ -29,7 +30,7 @@ if(strlen($_SESSION['alogin'])==0) {
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
     <meta name="description" content="" />
     <meta name="author" content="" />
-    <title>Admin | Student Registration</title>
+    <title>Admin | Course</title>
     <link href="assets/css/bootstrap.css" rel="stylesheet" />
     <link href="assets/css/font-awesome.css" rel="stylesheet" />
     <link href="assets/css/style.css" rel="stylesheet" />
@@ -47,7 +48,7 @@ if(strlen($_SESSION['alogin'])==0) {
         <div class="container">
               <div class="row">
                     <div class="col-md-12">
-                        <h1 class="page-head-line">Lecturer Details  </h1>
+                        <h1 class="page-head-line">Course  </h1>
                     </div>
                 </div>
                 <div class="row" >
@@ -55,7 +56,7 @@ if(strlen($_SESSION['alogin'])==0) {
                     <div class="col-md-6">
                         <div class="panel panel-default">
                         <div class="panel-heading">
-                          Lecturer Details
+                           Course 
                         </div>
 <font color="green" align="center"><?php echo htmlentities($_SESSION['msg']);?><?php echo htmlentities($_SESSION['msg']="");?></font>
 
@@ -63,91 +64,89 @@ if(strlen($_SESSION['alogin'])==0) {
                         <div class="panel-body">
                        <form name="dept" method="post">
    <div class="form-group">
-    <label for="lecturername">Lecturer Name  </label>
-    <input type="text" class="form-control" id="lecturername" name="lecturername" placeholder="Lecturer Name" required />
+    <label for="coursecode">Course Code  </label>
+    <input type="text" class="form-control" id="coursecode" name="coursecode" placeholder="Course Code" required />
   </div>
+
  <div class="form-group">
-    <label for="department">Department   </label>
-    <select name="department" id="department" class="form-control" required>
-      <option value="">Select a department</option>
-        <?php
-
-        $sql = mysqli_query($bd, "select id,department from department");
-
-    while ($row = mysqli_fetch_array($sql)) {
-        echo'<option value="'.$row[0].'">'.$row[1].'</option>';
-    }
-    ?>
-    </select>
-  </div>
- <div class="form-group">
-    <label for="coursename">Course   </label>
-    <select name="coursename" id="coursename" class="form-control"  required>
-      <option value="">Select a course</option>
-        <?php
-        $sql = mysqli_query($bd, "select id,courseName from course");
-    while ($row = mysqli_fetch_array($sql)) {
-        echo'<option value="'.$row[0].'">'.$row[1].'</option>';
-    }
-    ?>
-    </select>
+    <label for="coursename">Course Name  </label>
+    <input type="text" class="form-control" id="coursename" name="coursename" placeholder="Course Name" required />
   </div>
 
- <button type="submit" name="submit" id="submit" class="btn btn-default">Submit</button>
+<div class="form-group">
+    <label for="courseunit">Course unit  </label>
+    <input type="text" class="form-control" id="courseunit" name="courseunit" placeholder="Course Unit" required />
+  </div> 
+
+<div class="form-group">
+    <label for="seatlimit">Seat limit  </label>
+    <input type="text" class="form-control" id="seatlimit" name="seatlimit" placeholder="Seat limit" required />
+  </div>   
+
+ <button type="submit" name="submit" class="btn btn-default">Submit</button>
 </form>
                             </div>
                             </div>
                     </div>
                   
                 </div>
+                <font color="red" align="center"><?php echo htmlentities($_SESSION['delmsg']);?><?php echo htmlentities($_SESSION['delmsg']="");?></font>
                 <div class="col-md-12">
-
-<div class="panel panel-default">
-    <div class="panel-heading">
-        Manage Semester
-    </div>
-
-    <div class="panel-body">
-        <div class="table-responsive table-bordered">
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>#</th>
-                        <th>Semester</th>
-                        <th>Creation Date</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php
-                       $sql = mysqli_query($bd, "select * from semester");
-    $cnt = 1;
-    while ($row = mysqli_fetch_array($sql)) {
+                    
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            Manage Course
+                        </div>
+                       
+                        <div class="panel-body">
+                            <div class="table-responsive table-bordered">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>Course Code</th>
+                                            <th>Course Name </th>
+                                            <th>Course Unit</th>
+                                            <th>Seat limit</th>
+                                             <th>Creation Date</th>
+                                             <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+<?php
+$sql=mysqli_query($bd, "select * from course");
+    $cnt=1;
+    while($row=mysqli_fetch_array($sql)) {
         ?>
 
 
-                        <tr>
-                            <td><?php echo $cnt; ?></td>
-                            <td><?php echo htmlentities($row['semester']); ?></td>
-                            <td><?php echo htmlentities($row['creationDate']); ?></td>
-                            <td>
-                                <a href="semester.php?id=<?php echo $row['id'] ?>&del=delete" onClick="return confirm('Are you sure you want to delete?')">
-                                    <button class="btn btn-danger">Delete</button>
-                                </a>
-                            </td>
-                        </tr>
-                    <?php
-            $cnt++;
+                                        <tr>
+                                            <td><?php echo $cnt;?></td>
+                                            <td><?php echo htmlentities($row['courseCode']);?></td>
+                                            <td><?php echo htmlentities($row['courseName']);?></td>
+                                            <td><?php echo htmlentities($row['courseUnit']);?></td>
+                                             <td><?php echo htmlentities($row['noofSeats']);?></td>
+                                            <td><?php echo htmlentities($row['creationDate']);?></td>
+                                            <td>
+                                            <a href="edit-course.php?id=<?php echo $row['id']?>">
+<button class="btn btn-primary"><i class="fa fa-edit "></i> Edit</button> </a>                                        
+  <a href="course.php?id=<?php echo $row['id']?>&del=delete" onClick="return confirm('Are you sure you want to delete?')">
+                                            <button class="btn btn-danger">Delete</button>
+</a>
+                                            </td>
+                                        </tr>
+<?php
+        $cnt++;
     } ?>
 
-
-                </tbody>
-            </table>
-        </div>
-    </div>
-</div>
-
-</div>
+                                        
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                     
+                </div>
             </div>
 
 
@@ -156,26 +155,12 @@ if(strlen($_SESSION['alogin'])==0) {
 
         </div>
     </div>
+    
   <?php include('includes/footer.php');?>
+    
     <script src="assets/js/jquery-1.11.1.js"></script>
+    
     <script src="assets/js/bootstrap.js"></script>
-<!-- <script>
-function userAvailability() {
-$("#loaderIcon").show();
-jQuery.ajax({
-url: "check_availability.php",
-data:'regno='+$("#department").val(),
-type: "POST",
-success:function(data){
-$("#user-availability-status1").html(data);
-$("#loaderIcon").hide();
-},
-error:function (){}
-});
-}
-</script> -->
-
-
 </body>
 </html>
 <?php } ?>

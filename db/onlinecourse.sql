@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 05, 2023 at 05:53 PM
+-- Generation Time: May 06, 2023 at 06:01 AM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.0.28
 
@@ -137,8 +137,42 @@ CREATE TABLE `lecturer` (
   `id` int(11) NOT NULL,
   `name` varchar(255) NOT NULL,
   `created_date` date NOT NULL DEFAULT current_timestamp(),
-  `update_date` date DEFAULT NULL
+  `update_date` date DEFAULT NULL,
+  `course_id` int(255) NOT NULL,
+  `department_id` int(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `lecturer`
+--
+
+INSERT INTO `lecturer` (`id`, `name`, `created_date`, `update_date`, `course_id`, `department_id`) VALUES
+(1, 'Bebar', '2023-05-05', NULL, 0, 2),
+(2, 'Bebar', '2023-05-05', NULL, 0, 2),
+(3, 'Bebar', '2023-05-05', NULL, 0, 2),
+(4, 'Bebar', '2023-05-05', NULL, 0, 2),
+(5, 'dg', '2023-05-05', NULL, 1, 2),
+(6, 'dg', '2023-05-05', NULL, 1, 2),
+(7, 'dg', '2023-05-05', NULL, 1, 2),
+(8, 'dg', '2023-05-05', NULL, 1, 2),
+(9, 'Bebar', '2023-05-05', NULL, 1, 2),
+(10, 'Bebar', '2023-05-05', NULL, 1, 2),
+(11, 'Bebar', '2023-05-05', NULL, 1, 2),
+(12, 'Bebar', '2023-05-05', NULL, 1, 2),
+(13, 'Bebar', '2023-05-05', NULL, 1, 2),
+(14, 'Bebar', '2023-05-05', NULL, 1, 2),
+(15, 'Bebar', '2023-05-05', NULL, 1, 2),
+(16, 'Bebar', '2023-05-05', NULL, 1, 2),
+(17, 'Bebar', '2023-05-05', NULL, 1, 2),
+(18, 'dg', '2023-05-05', NULL, 1, 2),
+(19, 'dg', '2023-05-05', NULL, 1, 2),
+(20, 'Bebarrrr', '2023-05-06', NULL, 1, 2),
+(21, 'Bebar2323', '2023-05-06', NULL, 1, 2),
+(22, 'Bebar2323', '2023-05-06', NULL, 1, 2),
+(23, 'Bebar2323', '2023-05-06', NULL, 1, 2),
+(24, 'Bebar2323', '2023-05-06', NULL, 1, 2),
+(25, 'Bebar2323', '2023-05-06', NULL, 1, 2),
+(26, 'Bebar2323', '2023-05-06', NULL, 1, 2);
 
 -- --------------------------------------------------------
 
@@ -242,6 +276,14 @@ CREATE TABLE `year` (
   `created_date` date NOT NULL DEFAULT current_timestamp(),
   `update_date` date DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `year`
+--
+
+INSERT INTO `year` (`id`, `year`, `created_date`, `update_date`) VALUES
+(2, 'first year', '2023-05-05', NULL),
+(3, 'second year', '2023-05-05', NULL);
 
 --
 -- Indexes for dumped tables
@@ -353,7 +395,7 @@ ALTER TABLE `department`
 -- AUTO_INCREMENT for table `lecturer`
 --
 ALTER TABLE `lecturer`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
 
 --
 -- AUTO_INCREMENT for table `semester`
@@ -377,7 +419,7 @@ ALTER TABLE `userlog`
 -- AUTO_INCREMENT for table `year`
 --
 ALTER TABLE `year`
-  MODIFY `id` int(255) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

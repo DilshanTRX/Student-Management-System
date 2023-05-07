@@ -20,6 +20,10 @@ if(strlen($_SESSION['alogin'])==0) {
             echo "Error:".mysqli_error($bd);
         }
     }
+    if(isset($_GET['del'])) {
+        mysqli_query($bd, "delete from lecturer where id = '".$_GET['id']."'");
+        $_SESSION['delmsg']="Course deleted !!";
+    }
     ?>
 
 <!DOCTYPE html>
@@ -137,7 +141,7 @@ if(strlen($_SESSION['alogin'])==0) {
                             <td><?php echo htmlentities($row['course_id']); ?></td>
                             <td><?php echo htmlentities($row['department_id']); ?></td>
                             <td>
-                                <a href="semester.php?id=<?php echo $row['id'] ?>&del=delete" onClick="return confirm('Are you sure you want to delete?')">
+                                <a href="lecturer.php?id=<?php echo $row['id'] ?>&del=delete" onClick="return confirm('Are you sure you want to delete?')">
                                     <button class="btn btn-danger">Delete</button>
                                 </a>
                             </td>

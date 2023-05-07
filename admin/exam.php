@@ -6,10 +6,14 @@ if(strlen($_SESSION['alogin'])==0) {
 } else {
 
     if(isset($_POST['submit'])) {
-        $subject_code=$_POST['subject_code'];
-        $subject_name=$_POST['subject_name'];
-        $course_id=$_POST['course_id'];
-        $ret=mysqli_query($bd, "insert into subject(code,name,course_id) values('$subject_code','$subject_name','$course_id')");
+        $exam_name=$_POST['exam_name'];
+        $semester=$_POST['semester'];
+        $year=$_POST['year'];
+        $course=$_POST['course'];
+        $subject=$_POST['subject'];
+        $date=$_POST['exam_date'];
+        $time=$_POST['exam_time'];
+        $ret=mysqli_query($bd, "INSERT into exam(name,course_id,semester_id,year_id,subject_id,date,time) values('$exam_name','$course','$semester','$year','$subject','$date','$time')");
         if($ret) {
             $_SESSION['msg']="Course Created Successfully !!";
         } else {
@@ -17,7 +21,7 @@ if(strlen($_SESSION['alogin'])==0) {
         }
     }
     if(isset($_GET['del'])) {
-        mysqli_query($bd, "delete from subject where code = '".$_GET['id']."'");
+        mysqli_query($bd, "delete from exam where code = '".$_GET['id']."'");
         $_SESSION['delmsg']="Course deleted !!";
     }
     ?>
@@ -61,16 +65,41 @@ if(strlen($_SESSION['alogin'])==0) {
 
 
                         <div class="panel-body">
-                       <form name="dept" method="post">
+                       <form name="exam" method="post">
    <div class="form-group">
     <label for="exam_name">Exam Name   </label>
     <input type="text" class="form-control" id="exam_name" name="exam_name" placeholder="exam name" required />
   </div>
 
+  <div class="form-group">
+    <label for="yearname">Year</label>
+    <select name="year" id="year" class="form-control"  required>
+      <option value="">Select a Year</option>
+        <?php
+        $sql = mysqli_query($bd, "select id,year from Year");
+    while ($row = mysqli_fetch_array($sql)) {
+        echo'<option value="'.$row[0].'">'.$row[1].'</option>';
+    }
+    ?>
+    </select>
+  </div>
+
+  <div class="form-group">
+    <label for="semester">Semester</label>
+    <select name="semester" id="semester" class="form-control"  required>
+      <option value="">Select a Semester</option>
+        <?php
+        $sql = mysqli_query($bd, "select id,semester from semester");
+    while ($row = mysqli_fetch_array($sql)) {
+        echo'<option value="'.$row[0].'">'.$row[1].'</option>';
+    }
+    ?>
+    </select>
+  </div>
 
  <div class="form-group">
-    <label for="coursename">Course   </label>
-    <select name="course_id" id="coursename" class="form-control"  required>
+    <label for="coursename">Course</label>
+    <select name="course" id="course" class="form-control"  required>
       <option value="">Select a course</option>
         <?php
         $sql = mysqli_query($bd, "select id,courseName from course");
@@ -80,11 +109,31 @@ if(strlen($_SESSION['alogin'])==0) {
     ?>
     </select>
   </div>
-        <div class="col-md-3">
-            <input class="form-control col-md-6" type="date" name="exam_date">
-        </div>
 
+  <div class="form-group">
+    <label for="subjectname">Subject</label>
+    <select name="subject" id="subject" class="form-control"  required>
+      <option value="">Select a Subject</option>
+        <?php
+        $sql = mysqli_query($bd, "select code,name from subject");
+    while ($row = mysqli_fetch_array($sql)) {
+        echo'<option value="'.$row[0].'">'.$row[1].'</option>';
+    }
+    ?>
+    </select>
+  </div>
 
+  <div class="form-group">
+    <label for="date">Exam Date </label>
+    <input class="form-control col-md-6" type="date" name="exam_date" required>
+  </div>
+
+  <div class="form-group">
+    <label for="time">Exam Time </label>
+    <input class="form-control col-md-6" type="time" name="exam_time" required>
+  </div>
+
+<br>
  <button type="submit" name="submit" class="btn btn-default">Submit</button>
 </form>
                             </div>
@@ -106,16 +155,23 @@ if(strlen($_SESSION['alogin'])==0) {
                                     <thead>
                                         <tr>
                                             <th>#</th>
-                                            <th>Exam Id</th>
-                                            <th>Exam Name </th>
-                                            <th>Course Name</th>
-                                            <th>Subject ID </th>                                
+                                            <th>Exam Name</th>
+                                            <th>Year </th>
+                                            <th>Semester</th>
+                                            <th>Course </th> 
+                                            <th>Subject </th>  
+                                            <th>Date </th>  
+                                            <th>Time </th>  
+                                            <th>Marks</th>                                 
                                             <th>Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
 <?php
-$sql=mysqli_query($bd, "SELECT * from exam");
+$sql=mysqli_query($bd, "SELECT exam.name as examname, year.year,semester.semester,course.courseName,
+subject.name,exam.date,exam.time FROM exam INNER JOIN year on year.id = exam.year_id INNER join 
+semester on semester.id = exam.semester_id INNER join subject on subject.code = exam.subject_id INNER join 
+course on course.id = subject.course_id;");
     $cnt=1;
     while($row=mysqli_fetch_array($sql)) {
         ?>
@@ -123,11 +179,15 @@ $sql=mysqli_query($bd, "SELECT * from exam");
 
     <tr>
         <td><?php echo $cnt;?></td>
-        <td><?php echo htmlentities($row['id']);?></td>
+        <td><?php echo htmlentities($row['examname']);?></td>
+        <td><?php echo htmlentities($row['year']);?></td>
+        <td><?php echo htmlentities($row['semester']);?></td>
+        <td><?php echo htmlentities($row['courseName']);?></td>
         <td><?php echo htmlentities($row['name']);?></td>
         <td><?php echo htmlentities($row['date']);?></td>
-    
-    
+   
+        <td><?php echo htmlentities($row['time']);?></td>
+        <td><input type="text"></td>
     
         <td>
         <a href="edit-course.php?id=<?php echo $row['id']?>">

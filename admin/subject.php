@@ -9,7 +9,8 @@ if(strlen($_SESSION['alogin'])==0) {
         $subject_code=$_POST['subject_code'];
         $subject_name=$_POST['subject_name'];
         $course_id=$_POST['course_id'];
-        $ret=mysqli_query($bd, "insert into subject(code,name,course_id) values('$subject_code','$subject_name','$course_id')");
+        $ret=mysqli_query($bd, "INSERT into subject(subject_code,name,course_id) values('$subject_code','$subject_name','$course_id')");
+        echo $ret;
         if($ret) {
             $_SESSION['msg']="Course Created Successfully !!";
         } else {
@@ -17,8 +18,8 @@ if(strlen($_SESSION['alogin'])==0) {
         }
     }
     if(isset($_GET['del'])) {
-        mysqli_query($bd, "delete from subject where code = '".$_GET['id']."'");
-        $_SESSION['delmsg']="Course deleted !!";
+        mysqli_query($bd, "delete from subject where code = '".$_GET['code']."'");
+        $_SESSION['delmsg']="Subject deleted !!";
     }
     ?>
 
@@ -29,7 +30,7 @@ if(strlen($_SESSION['alogin'])==0) {
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
     <meta name="description" content="" />
     <meta name="author" content="" />
-    <title>Admin | Course</title>
+    <title>Admin | Subject</title>
     <link href="assets/css/bootstrap.css" rel="stylesheet" />
     <link href="assets/css/font-awesome.css" rel="stylesheet" />
     <link href="assets/css/style.css" rel="stylesheet" />
@@ -47,7 +48,7 @@ if(strlen($_SESSION['alogin'])==0) {
         <div class="container">
               <div class="row">
                     <div class="col-md-12">
-                        <h1 class="page-head-line">Course  </h1>
+                        <h1 class="page-head-line">Subject  </h1>
                     </div>
                 </div>
                 <div class="row" >
@@ -55,13 +56,13 @@ if(strlen($_SESSION['alogin'])==0) {
                     <div class="col-md-6">
                         <div class="panel panel-default">
                         <div class="panel-heading">
-                           Course 
+                           Subject 
                         </div>
 <font color="green" align="center"><?php echo htmlentities($_SESSION['msg']);?><?php echo htmlentities($_SESSION['msg']="");?></font>
 
 
                         <div class="panel-body">
-                       <form name="dept" method="post">
+                       <form name="sub" method="post">
    <div class="form-group">
     <label for="subject_code">Subject Code  </label>
     <input type="text" class="form-control" id="subject_code" name="subject_code" placeholder="subject_code" required />
@@ -97,7 +98,7 @@ if(strlen($_SESSION['alogin'])==0) {
                     
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            Manage Course
+                            Manage Subject
                         </div>
                        
                         <div class="panel-body">
@@ -108,16 +109,15 @@ if(strlen($_SESSION['alogin'])==0) {
                                             <th>#</th>
                                             <th>Course Code</th>
                                             <th>Course Name </th>
+                                            <th>Subject Code </th>
                                             <th>Subject Name </th>
-                                           
-                                  
                                   
                                              <th>Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
 <?php
-$sql=mysqli_query($bd, "SELECT course.courseName,course.courseCode,subject.code, subject.name from course inner join subject on subject.course_id = course.id");
+$sql=mysqli_query($bd, "SELECT course.courseName,course.courseCode,subject.code, subject.name, subject.subject_code from course inner join subject on subject.course_id = course.id");
     $cnt=1;
     while($row=mysqli_fetch_array($sql)) {
         ?>
@@ -127,17 +127,16 @@ $sql=mysqli_query($bd, "SELECT course.courseName,course.courseCode,subject.code,
                                             <td><?php echo $cnt;?></td>
                                             <td><?php echo htmlentities($row['courseCode']);?></td>
                                             <td><?php echo htmlentities($row['courseName']);?></td>
+                                            <td><?php echo htmlentities($row['subject_code']);?></td>
                                             <td><?php echo htmlentities($row['name']);?></td>
                                         
                                       
                                       
                                             <td>
-                                            <a href="edit-course.php?id=<?php echo $row['id']?>">
-<button class="btn btn-primary"><i class="fa fa-edit "></i> Edit</button> </a>                                        
-  <a href="course.php?id=<?php echo $row['id']?>&del=delete" onClick="return confirm('Are you sure you want to delete?')">
+                                                                         
+  <a href="subject.php?code=<?php echo $row['code']?>&del=delete" onClick="return confirm('Are you sure you want to delete?')">
                                             <button class="btn btn-danger">Delete</button>
-</a>
-                                            </td>
+</a>                                        </td>
                                         </tr>
 <?php
         $cnt++;

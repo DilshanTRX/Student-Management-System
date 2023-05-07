@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 06, 2023 at 06:01 AM
+-- Generation Time: May 07, 2023 at 11:54 AM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.0.28
 
@@ -79,7 +79,8 @@ CREATE TABLE `course` (
 --
 
 INSERT INTO `course` (`id`, `courseCode`, `courseName`, `courseUnit`, `noofSeats`, `creationDate`, `update_date`, `lecturer`) VALUES
-(1, 'C001', 'DEP', '01', 98, '2023-05-02 15:10:51', '0000-00-00', 0);
+(1, 'C001', 'DEP', '01', 98, '2023-05-02 15:10:51', '0000-00-00', 0),
+(2, 'C002', 'QWSS', '01', 12, '2023-05-06 04:12:40', '0000-00-00', 0);
 
 -- --------------------------------------------------------
 
@@ -147,32 +148,7 @@ CREATE TABLE `lecturer` (
 --
 
 INSERT INTO `lecturer` (`id`, `name`, `created_date`, `update_date`, `course_id`, `department_id`) VALUES
-(1, 'Bebar', '2023-05-05', NULL, 0, 2),
-(2, 'Bebar', '2023-05-05', NULL, 0, 2),
-(3, 'Bebar', '2023-05-05', NULL, 0, 2),
-(4, 'Bebar', '2023-05-05', NULL, 0, 2),
-(5, 'dg', '2023-05-05', NULL, 1, 2),
-(6, 'dg', '2023-05-05', NULL, 1, 2),
-(7, 'dg', '2023-05-05', NULL, 1, 2),
-(8, 'dg', '2023-05-05', NULL, 1, 2),
-(9, 'Bebar', '2023-05-05', NULL, 1, 2),
-(10, 'Bebar', '2023-05-05', NULL, 1, 2),
-(11, 'Bebar', '2023-05-05', NULL, 1, 2),
-(12, 'Bebar', '2023-05-05', NULL, 1, 2),
-(13, 'Bebar', '2023-05-05', NULL, 1, 2),
-(14, 'Bebar', '2023-05-05', NULL, 1, 2),
-(15, 'Bebar', '2023-05-05', NULL, 1, 2),
-(16, 'Bebar', '2023-05-05', NULL, 1, 2),
-(17, 'Bebar', '2023-05-05', NULL, 1, 2),
-(18, 'dg', '2023-05-05', NULL, 1, 2),
-(19, 'dg', '2023-05-05', NULL, 1, 2),
-(20, 'Bebarrrr', '2023-05-06', NULL, 1, 2),
-(21, 'Bebar2323', '2023-05-06', NULL, 1, 2),
-(22, 'Bebar2323', '2023-05-06', NULL, 1, 2),
-(23, 'Bebar2323', '2023-05-06', NULL, 1, 2),
-(24, 'Bebar2323', '2023-05-06', NULL, 1, 2),
-(25, 'Bebar2323', '2023-05-06', NULL, 1, 2),
-(26, 'Bebar2323', '2023-05-06', NULL, 1, 2);
+(29, 'Nimal', '2023-05-07', NULL, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -192,7 +168,6 @@ CREATE TABLE `semester` (
 --
 
 INSERT INTO `semester` (`id`, `semester`, `creationDate`, `updationDate`) VALUES
-(1, 'Sem12', '2023-05-02 15:10:25', ''),
 (2, 'Sem 1', '2023-05-02 17:39:48', ''),
 (4, 'semester 01', '2023-05-02 17:44:14', ''),
 (5, 'semester 01', '2023-05-02 17:44:18', ''),
@@ -212,7 +187,7 @@ CREATE TABLE `students` (
   `pincode` varchar(255) NOT NULL,
   `session` varchar(255) NOT NULL,
   `department` varchar(255) NOT NULL,
-  `semester` varchar(255) NOT NULL,
+  `year` int(255) NOT NULL,
   `cgpa` decimal(10,2) NOT NULL,
   `creationdate` timestamp NOT NULL DEFAULT current_timestamp(),
   `updationDate` varchar(255) NOT NULL
@@ -222,9 +197,21 @@ CREATE TABLE `students` (
 -- Dumping data for table `students`
 --
 
-INSERT INTO `students` (`StudentRegno`, `studentPhoto`, `password`, `studentName`, `pincode`, `session`, `department`, `semester`, `cgpa`, `creationdate`, `updationDate`) VALUES
-('S001', NULL, '202cb962ac59075b964b07152d234b70', 'dilshan', '373063', '', '', 'sem-01', 0.00, '2023-05-02 18:00:59', ''),
-('S002', NULL, '202cb962ac59075b964b07152d234b70', 'sachin', '785606', '', '', 'sem-01', 0.00, '2023-05-03 17:11:37', '');
+INSERT INTO `students` (`StudentRegno`, `studentPhoto`, `password`, `studentName`, `pincode`, `session`, `department`, `year`, `cgpa`, `creationdate`, `updationDate`) VALUES
+('S001', NULL, '202cb962ac59075b964b07152d234b70', 'dilshan', '373063', '', '', 0, 0.00, '2023-05-02 18:00:59', ''),
+('S002', NULL, '202cb962ac59075b964b07152d234b70', 'sachin', '785606', '', '', 0, 0.00, '2023-05-03 17:11:37', '');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `subject`
+--
+
+CREATE TABLE `subject` (
+  `code` int(255) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `course_id` int(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -236,8 +223,19 @@ CREATE TABLE `timetable` (
   `id` int(255) NOT NULL,
   `course_id` int(255) NOT NULL,
   `date` date NOT NULL DEFAULT current_timestamp(),
+  `time` time NOT NULL,
   `created_date` date NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `timetable`
+--
+
+INSERT INTO `timetable` (`id`, `course_id`, `date`, `time`, `created_date`) VALUES
+(1, 1, '2023-05-12', '00:00:00', '2023-05-06'),
+(2, 1, '2023-05-12', '00:00:00', '2023-05-06'),
+(3, 1, '2023-05-12', '00:00:00', '2023-05-06'),
+(4, 1, '2023-05-12', '00:00:00', '2023-05-06');
 
 -- --------------------------------------------------------
 
@@ -340,6 +338,12 @@ ALTER TABLE `students`
   ADD PRIMARY KEY (`StudentRegno`);
 
 --
+-- Indexes for table `subject`
+--
+ALTER TABLE `subject`
+  ADD PRIMARY KEY (`code`);
+
+--
 -- Indexes for table `timetable`
 --
 ALTER TABLE `timetable`
@@ -377,7 +381,7 @@ ALTER TABLE `attendance`
 -- AUTO_INCREMENT for table `course`
 --
 ALTER TABLE `course`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `courseenrolls`
@@ -395,7 +399,7 @@ ALTER TABLE `department`
 -- AUTO_INCREMENT for table `lecturer`
 --
 ALTER TABLE `lecturer`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
 
 --
 -- AUTO_INCREMENT for table `semester`
@@ -404,10 +408,16 @@ ALTER TABLE `semester`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
+-- AUTO_INCREMENT for table `subject`
+--
+ALTER TABLE `subject`
+  MODIFY `code` int(255) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT for table `timetable`
 --
 ALTER TABLE `timetable`
-  MODIFY `id` int(255) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `userlog`

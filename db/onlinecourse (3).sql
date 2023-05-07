@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.1
+-- version 5.1.1
 -- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1
--- Generation Time: May 07, 2023 at 11:54 AM
--- Server version: 10.4.28-MariaDB
--- PHP Version: 8.0.28
+-- Host: localhost
+-- Generation Time: May 07, 2023 at 12:34 PM
+-- Server version: 10.4.21-MariaDB
+-- PHP Version: 7.4.27
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -33,7 +33,7 @@ CREATE TABLE `admin` (
   `password` varchar(255) NOT NULL,
   `creationDate` timestamp NOT NULL DEFAULT current_timestamp(),
   `updationDate` varchar(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `admin`
@@ -55,7 +55,7 @@ CREATE TABLE `attendance` (
   `date` date DEFAULT NULL,
   `created_date` date NOT NULL DEFAULT current_timestamp(),
   `status` bit(1) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
@@ -67,20 +67,17 @@ CREATE TABLE `course` (
   `id` int(11) NOT NULL,
   `courseCode` varchar(255) NOT NULL,
   `courseName` varchar(255) NOT NULL,
-  `courseUnit` varchar(255) NOT NULL,
   `noofSeats` int(11) NOT NULL,
   `creationDate` timestamp NOT NULL DEFAULT current_timestamp(),
-  `update_date` date DEFAULT NULL,
-  `lecturer` int(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+  `update_date` date DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `course`
 --
 
-INSERT INTO `course` (`id`, `courseCode`, `courseName`, `courseUnit`, `noofSeats`, `creationDate`, `update_date`, `lecturer`) VALUES
-(1, 'C001', 'DEP', '01', 98, '2023-05-02 15:10:51', '0000-00-00', 0),
-(2, 'C002', 'QWSS', '01', 12, '2023-05-06 04:12:40', '0000-00-00', 0);
+INSERT INTO `course` (`id`, `courseCode`, `courseName`, `noofSeats`, `creationDate`, `update_date`) VALUES
+(4, 'C001', 'Computer Science', 22, '2023-05-07 10:32:46', NULL);
 
 -- --------------------------------------------------------
 
@@ -97,7 +94,7 @@ CREATE TABLE `courseenrolls` (
   `semester` int(11) NOT NULL,
   `course` int(11) NOT NULL,
   `enrollDate` timestamp NOT NULL DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `courseenrolls`
@@ -118,7 +115,7 @@ CREATE TABLE `department` (
   `id` int(11) NOT NULL,
   `department` varchar(255) NOT NULL,
   `creationDate` timestamp NOT NULL DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `department`
@@ -141,7 +138,7 @@ CREATE TABLE `lecturer` (
   `update_date` date DEFAULT NULL,
   `course_id` int(255) NOT NULL,
   `department_id` int(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `lecturer`
@@ -161,7 +158,7 @@ CREATE TABLE `semester` (
   `semester` varchar(255) NOT NULL,
   `creationDate` timestamp NOT NULL DEFAULT current_timestamp(),
   `updationDate` varchar(255) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `semester`
@@ -191,15 +188,15 @@ CREATE TABLE `students` (
   `cgpa` decimal(10,2) NOT NULL,
   `creationdate` timestamp NOT NULL DEFAULT current_timestamp(),
   `updationDate` varchar(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `students`
 --
 
 INSERT INTO `students` (`StudentRegno`, `studentPhoto`, `password`, `studentName`, `pincode`, `session`, `department`, `year`, `cgpa`, `creationdate`, `updationDate`) VALUES
-('S001', NULL, '202cb962ac59075b964b07152d234b70', 'dilshan', '373063', '', '', 0, 0.00, '2023-05-02 18:00:59', ''),
-('S002', NULL, '202cb962ac59075b964b07152d234b70', 'sachin', '785606', '', '', 0, 0.00, '2023-05-03 17:11:37', '');
+('S001', NULL, '202cb962ac59075b964b07152d234b70', 'dilshan', '373063', '', '', 0, '0.00', '2023-05-02 18:00:59', ''),
+('S002', NULL, '202cb962ac59075b964b07152d234b70', 'sachin', '785606', '', '', 0, '0.00', '2023-05-03 17:11:37', '');
 
 -- --------------------------------------------------------
 
@@ -211,7 +208,7 @@ CREATE TABLE `subject` (
   `code` int(255) NOT NULL,
   `name` varchar(255) NOT NULL,
   `course_id` int(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
@@ -225,7 +222,7 @@ CREATE TABLE `timetable` (
   `date` date NOT NULL DEFAULT current_timestamp(),
   `time` time NOT NULL,
   `created_date` date NOT NULL DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `timetable`
@@ -250,7 +247,7 @@ CREATE TABLE `userlog` (
   `loginTime` timestamp NOT NULL DEFAULT current_timestamp(),
   `logout` varchar(255) NOT NULL,
   `status` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `userlog`
@@ -273,7 +270,7 @@ CREATE TABLE `year` (
   `year` varchar(255) NOT NULL,
   `created_date` date NOT NULL DEFAULT current_timestamp(),
   `update_date` date DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `year`
@@ -381,7 +378,7 @@ ALTER TABLE `attendance`
 -- AUTO_INCREMENT for table `course`
 --
 ALTER TABLE `course`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `courseenrolls`

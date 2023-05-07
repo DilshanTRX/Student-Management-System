@@ -8,9 +8,9 @@ if(strlen($_SESSION['alogin'])==0) {
     if(isset($_POST['submit'])) {
         $coursecode=$_POST['coursecode'];
         $coursename=$_POST['coursename'];
-        $courseunit=$_POST['courseunit'];
+
         $seatlimit=$_POST['seatlimit'];
-        $ret=mysqli_query($bd, "insert into course(courseCode,courseName,courseUnit,noofSeats) values('$coursecode','$coursename','$courseunit','$seatlimit')");
+        $ret=mysqli_query($bd, "insert into course(courseCode,courseName,noofSeats) values('$coursecode','$coursename','$seatlimit')");
         if($ret) {
             $_SESSION['msg']="Course Created Successfully !!";
         } else {
@@ -73,10 +73,6 @@ if(strlen($_SESSION['alogin'])==0) {
     <input type="text" class="form-control" id="coursename" name="coursename" placeholder="Course Name" required />
   </div>
 
-<div class="form-group">
-    <label for="courseunit">Course unit  </label>
-    <input type="text" class="form-control" id="courseunit" name="courseunit" placeholder="Course Unit" required />
-  </div> 
 
 <div class="form-group">
     <label for="seatlimit">Seat limit  </label>
@@ -106,7 +102,7 @@ if(strlen($_SESSION['alogin'])==0) {
                                             <th>#</th>
                                             <th>Course Code</th>
                                             <th>Course Name </th>
-                                            <th>Course Unit</th>
+                                  
                                             <th>Seat limit</th>
                                              <th>Creation Date</th>
                                              <th>Action</th>
@@ -124,7 +120,7 @@ $sql=mysqli_query($bd, "select * from course");
                                             <td><?php echo $cnt;?></td>
                                             <td><?php echo htmlentities($row['courseCode']);?></td>
                                             <td><?php echo htmlentities($row['courseName']);?></td>
-                                            <td><?php echo htmlentities($row['courseUnit']);?></td>
+                                    
                                              <td><?php echo htmlentities($row['noofSeats']);?></td>
                                             <td><?php echo htmlentities($row['creationDate']);?></td>
                                             <td>

@@ -15,6 +15,7 @@
                                <li><a href="user-log.php">Student Logs </a></li>
                                <li><a href="course-timetable.php">Course Time Table </a></li>  
                                <li><a href="mark_attendence.php">Attendance </a></li>  
+                               <li><a href="subject.php">Subject </a></li>  
                             <li><a href="logout.php">Logout</a></li>
 
                         </ul>

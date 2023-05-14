@@ -1,11 +1,13 @@
 <?php 
 require_once("includes/config.php");
 if(!empty($_POST["cid"])) {
-	$cid= $_POST["cid"];
+	$cid= $_POST["stu"];
+	$studentregno= $_POST["studentregno"];
+
 	
-		$result =mysqli_query($bd, "SELECT studentRegno FROM 	courseenrolls WHERE course='$cid'");
+		$result =mysqli_query($bd, "SELECT student_id FROM 	courseenrolls WHERE course='$cid' and student_id='$studentregno");
 		$count=mysqli_num_rows($result);
-if($count>0)
+if($count>1)
 {
 echo "<span style='color:red'> Already Applied for this course.</span>";
  echo "<script>$('#submit').prop('disabled',true);</script>";

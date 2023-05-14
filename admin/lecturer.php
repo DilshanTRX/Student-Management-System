@@ -37,6 +37,8 @@ if(strlen($_SESSION['alogin'])==0) {
     <link href="assets/css/bootstrap.css" rel="stylesheet" />
     <link href="assets/css/font-awesome.css" rel="stylesheet" />
     <link href="assets/css/style.css" rel="stylesheet" />
+
+
 </head>
 
 <body>
@@ -116,10 +118,9 @@ if(strlen($_SESSION['alogin'])==0) {
             <table class="table">
                 <thead>
                     <tr>
-                        <th>Id</th>
+                        <th >Id</th>
                         <th>Name</th>
                         <th>Creation Date</th>
-                        <th>Updation Date</th>
                         <th>Course ID</th>
                         <th>Department ID</th>
                         <th>Action</th>
@@ -127,7 +128,9 @@ if(strlen($_SESSION['alogin'])==0) {
                 </thead>
                 <tbody>
                     <?php
-                       $sql = mysqli_query($bd, "select * from lecturer");
+                       $sql = mysqli_query($bd, "select lecturer.id,lecturer.name,course.courseName,department.department,lecturer.created_date from lecturer INNER JOIN
+                       department on department.id = lecturer.department_id INNER JOIN
+                       course on course.id = lecturer.course_id");
     $cnt = 1;
     while ($row = mysqli_fetch_array($sql)) {
         ?>
@@ -137,9 +140,8 @@ if(strlen($_SESSION['alogin'])==0) {
                             <td><?php echo htmlentities($row['id']);?></td>
                             <td><?php echo htmlentities($row['name']); ?></td>
                             <td><?php echo htmlentities($row['created_date']); ?></td>
-                            <td><?php echo htmlentities($row['update_date']); ?></td>
-                            <td><?php echo htmlentities($row['course_id']); ?></td>
-                            <td><?php echo htmlentities($row['department_id']); ?></td>
+                            <td><?php echo htmlentities($row['courseName']); ?></td>
+                            <td><?php echo htmlentities($row['department']); ?></td>
                             <td>
                                 <a href="lecturer.php?id=<?php echo $row['id'] ?>&del=delete" onClick="return confirm('Are you sure you want to delete?')">
                                     <button class="btn btn-danger">Delete</button>

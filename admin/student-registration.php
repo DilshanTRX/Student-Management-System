@@ -13,7 +13,7 @@ $studentname=$_POST['studentname'];
 $studentregno=$_POST['studentregno'];
 $password=md5($_POST['password']);
 $studentindexno=$_POST['studentindexno'];
-$ret=mysqli_query($bd, "insert into students(studentName,StudentRegno,password,studentindexno) values('$studentname','$studentregno','$password','$studentindexno')");
+$ret=mysqli_query($bd, "INSERT into students(studentName,StudentRegno,password,studentindexno) values('$studentname','$studentregno','$password','$studentindexno')");
 if($ret)
 {
 $_SESSION['msg']="Student Registered Successfully !!";

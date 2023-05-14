@@ -8,12 +8,12 @@ if(strlen($_SESSION['login'])==0 or strlen($_SESSION['pcode'])==0) {
     if(isset($_POST['submit'])) {
         $studentregno=$_POST['studentregno'];
         $studentindexno=$_POST['studentindexno'];
-        $session=$_POST['session'];
+        // $session=$_POST['session'];
         $dept=$_POST['department'];
-        $level=$_POST['level'];
+        $year=$_POST['year'];
         $course=$_POST['course'];
         $sem=$_POST['sem'];
-        $ret=mysqli_query($bd, "insert into courseenrolls(studentRegno,studentindexno,session,department,level,course,semester) values('$studentregno','$studentindexno','$session','$dept','$level','$course','$sem')");
+        $ret=mysqli_query($bd, "INSERT into courseenrolls(student_id,index_no,department,course,semester,year) values('$studentregno','$studentindexno','$dept','$course','$sem','$year')");
         if($ret) {
             $_SESSION['msg']="Enroll Successfully !!";
             echo "Enroll Successfully !!";
@@ -65,7 +65,7 @@ if(strlen($_SESSION['login'])==0 or strlen($_SESSION['pcode'])==0) {
     while($row=mysqli_fetch_array($sql)) { ?>
 
                         <div class="panel-body">
-                       <form name="dept" method="post" enctype="multipart/form-data">
+                       <form name="enroll" method="post" enctype="multipart/form-data">
    <div class="form-group">
     <label for="studentname">Student Name  </label>
     <input type="text" class="form-control" id="studentname" name="studentname" value="<?php echo htmlentities($row['studentName']);?>"  />
@@ -90,14 +90,14 @@ if(strlen($_SESSION['login'])==0 or strlen($_SESSION['pcode'])==0) {
  <?php } ?>
 
 <div class="form-group">
-    <label for="Session">Session  </label>
-    <select class="form-control" name="session" required="required">
-   <option value="">Select Session</option>   
+    <label for="Session">Year  </label>
+    <select class="form-control" name="year" required="required">
+   <option value="">Select Year</option>   
    <?php
-    $sql=mysqli_query($bd, "select * from session");
+    $sql=mysqli_query($bd, "select * from year");
     while($row=mysqli_fetch_array($sql)) {
         ?>
-<option value="<?php echo htmlentities($row['id']);?>"><?php echo htmlentities($row['session']);?></option>
+<option value="<?php echo htmlentities($row['id']);?>"><?php echo htmlentities($row['year']);?></option>
 <?php } ?>
 
     </select> 
@@ -120,19 +120,6 @@ if(strlen($_SESSION['login'])==0 or strlen($_SESSION['pcode'])==0) {
   </div> 
 
 
-<div class="form-group">
-    <label for="Level">Level  </label>
-    <select class="form-control" name="level" required="required">
-   <option value="">Select Level</option>   
-   <?php
-        $sql=mysqli_query($bd, "select * from level");
-    while($row=mysqli_fetch_array($sql)) {
-        ?>
-<option value="<?php echo htmlentities($row['id']);?>"><?php echo htmlentities($row['level']);?></option>
-<?php } ?>
-
-    </select> 
-  </div>  
 
 <div class="form-group">
     <label for="Semester">Semester  </label>
@@ -190,6 +177,7 @@ $("#loaderIcon").show();
 jQuery.ajax({
 url: "check_availability.php",
 data:'cid='+$("#course").val(),
+data:'stu='+$("#studentregno").val(),
 type: "POST",
 success:function(data){
 $("#course-availability-status1").html(data);

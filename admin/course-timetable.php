@@ -28,7 +28,7 @@ if (strlen($_SESSION['alogin']) == 0) {
     //     mysqli_query($bd, "update students set password='$newpass' where StudentRegno = '" . $_GET['id'] . "'");
     //     $_SESSION['delmsg'] = "Password Reset. New Password is 12345";
     // }
-    ?>
+?>
 
     <!DOCTYPE html>
     <html xmlns="http://www.w3.org/1999/xhtml">
@@ -42,7 +42,7 @@ if (strlen($_SESSION['alogin']) == 0) {
         <link href="assets/css/bootstrap.css" rel="stylesheet" />
         <link href="assets/css/font-awesome.css" rel="stylesheet" />
         <link href="assets/css/style.css" rel="stylesheet" />
-        
+
     </head>
 
     <body>
@@ -51,7 +51,7 @@ if (strlen($_SESSION['alogin']) == 0) {
         <?php if ($_SESSION['alogin'] != "") {
             include('includes/menubar.php');
         }
-    ?>
+        ?>
 
         <div class="content-wrapper">
             <div class="container">
@@ -71,14 +71,15 @@ if (strlen($_SESSION['alogin']) == 0) {
                                 <div class="col-md-3">
 
                                     <select class="form-control col-md-6" name="course" id="course">
+                                        <option>Select Course</option>
                                         <?php
-                                    $sql = mysqli_query($bd, "select id,courseName from course");
-    $cnt = 1;
-    while ($row = mysqli_fetch_array($sql)) {
-        echo '  <option>Select Course</option>
-                                            <option value="'.$row[0].'">' . $row[1] . '</option>';
-    }
-    ?>
+                                        $sql = mysqli_query($bd, "select id,courseName from course");
+
+                                        while ($row = mysqli_fetch_array($sql)) {
+                                            echo ' 
+                                            <option value="' . $row[0] . '">' . $row[1] . '</option>';
+                                        }
+                                        ?>
                                     </select>
                                 </div>
                                 <div class="col-md-3">
@@ -106,7 +107,7 @@ if (strlen($_SESSION['alogin']) == 0) {
                                 <table class="table">
                                     <thead>
                                         <tr>
-                                            <th>#</th>
+                                        
                                             <th>Course Code </th>
                                             <th> Course Name </th>
                                             <th>Course Date</th>
@@ -116,14 +117,14 @@ if (strlen($_SESSION['alogin']) == 0) {
                                     </thead>
                                     <tbody>
                                         <?php
-    $sql = mysqli_query($bd, "select timetable.id,course.courseName,timetable.date,course.courseCode,timetable.time from timetable inner join
+                                        $sql = mysqli_query($bd, "select timetable.id,course.courseName,timetable.date,course.courseCode,timetable.time from timetable inner join
                                              course on course.id = timetable.course_id");
-    $cnt = 1;
-    while ($row = mysqli_fetch_array($sql)) {
-        ?>
+                                     
+                                        while ($row = mysqli_fetch_array($sql)) {
+                                        ?>
 
                                             <tr>
-                                                <td><?php echo $cnt; ?></td>
+                                            
                                                 <td><?php echo htmlentities($row['courseCode']); ?></td>
                                                 <td><?php echo htmlentities($row['courseName']); ?></td>
                                                 <td><?php echo htmlentities($row['date']); ?></td>
@@ -132,12 +133,12 @@ if (strlen($_SESSION['alogin']) == 0) {
                                                     <a href="course-timetable.php?id=<?php echo $row['id'] ?>&del=delete" onClick="return confirm('Are you sure you want to delete?')">
                                                         <button class="btn btn-danger">Delete</button>
                                                     </a>
-                                                   
+
                                                 </td>
                                             </tr>
                                         <?php
-            $cnt++;
-    } ?>
+
+                                        } ?>
 
 
                                     </tbody>

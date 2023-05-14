@@ -13,7 +13,8 @@ if(strlen($_SESSION['alogin'])==0) {
         $subject=$_POST['subject'];
         $date=$_POST['exam_date'];
         $time=$_POST['exam_time'];
-        $ret=mysqli_query($bd, "INSERT into exam(name,course_id,semester_id,year_id,subject_id,date,time) values('$exam_name','$course','$semester','$year','$subject','$date','$time')");
+        $exam_code=$_POST['exam_code'];
+        $ret=mysqli_query($bd, "INSERT into exam(exam_code,name,course_id,semester_id,year_id,subject_id,date,time) values('$exam_code','$exam_name','$course','$semester','$year','$subject','$date','$time')");
         if($ret) {
             $_SESSION['msg']="Course Created Successfully !!";
         } else {
@@ -21,8 +22,8 @@ if(strlen($_SESSION['alogin'])==0) {
         }
     }
     if(isset($_GET['del'])) {
-        mysqli_query($bd, "delete from exam where code = '".$_GET['id']."'");
-        $_SESSION['delmsg']="Course deleted !!";
+        mysqli_query($bd, "delete from exam where id= '".$_GET['id']."'");
+        $_SESSION['delmsg']="Exam deleted !!";
     }
     ?>
 
@@ -33,10 +34,13 @@ if(strlen($_SESSION['alogin'])==0) {
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
     <meta name="description" content="" />
     <meta name="author" content="" />
-    <title>Admin | Course</title>
+    <title>Admin | Exam</title>
     <link href="assets/css/bootstrap.css" rel="stylesheet" />
     <link href="assets/css/font-awesome.css" rel="stylesheet" />
     <link href="assets/css/style.css" rel="stylesheet" />
+  
+   
+
 </head>
 
 <body>
@@ -66,6 +70,12 @@ if(strlen($_SESSION['alogin'])==0) {
 
                         <div class="panel-body">
                        <form name="exam" method="post">
+
+    <div class="form-group">
+    <label for="exam_name">Exam Code   </label>
+    <input type="text" class="form-control" id="exam_code" name="exam_code" placeholder="exam code" required />
+  </div>
+
    <div class="form-group">
     <label for="exam_name">Exam Name   </label>
     <input type="text" class="form-control" id="exam_name" name="exam_name" placeholder="exam name" required />
@@ -161,15 +171,14 @@ if(strlen($_SESSION['alogin'])==0) {
                                             <th>Course </th> 
                                             <th>Subject </th>  
                                             <th>Date </th>  
-                                            <th>Time </th>  
-                                            <th>Marks</th>                                 
+                                            <th>Time </th>                                
                                             <th>Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
 <?php
 $sql=mysqli_query($bd, "SELECT exam.name as examname, year.year,semester.semester,course.courseName,
-subject.name,exam.date,exam.time FROM exam INNER JOIN year on year.id = exam.year_id INNER join 
+subject.name,exam.date,exam.time,exam.id FROM exam INNER JOIN year on year.id = exam.year_id INNER join 
 semester on semester.id = exam.semester_id INNER join subject on subject.code = exam.subject_id INNER join 
 course on course.id = subject.course_id;");
     $cnt=1;
@@ -187,12 +196,8 @@ course on course.id = subject.course_id;");
         <td><?php echo htmlentities($row['date']);?></td>
    
         <td><?php echo htmlentities($row['time']);?></td>
-        <td><input type="text"></td>
-    
-        <td>
-        <a href="edit-course.php?id=<?php echo $row['id']?>">
-<button class="btn btn-primary"><i class="fa fa-edit "></i> Edit</button> </a>                                        
-  <a href="course.php?id=<?php echo $row['id']?>&del=delete" onClick="return confirm('Are you sure you want to delete?')">
+        <td>                                     
+  <a href="exam.php?id=<?php echo $row['id']?>&del=delete" onClick="return confirm('Are you sure you want to delete?')">
                                             <button class="btn btn-danger">Delete</button>
 </a>
                                             </td>
@@ -223,6 +228,8 @@ course on course.id = subject.course_id;");
     <script src="assets/js/jquery-1.11.1.js"></script>
     
     <script src="assets/js/bootstrap.js"></script>
+
+  
 </body>
 </html>
 <?php } ?>

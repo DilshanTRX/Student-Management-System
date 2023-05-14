@@ -6,13 +6,14 @@ if(strlen($_SESSION['alogin'])==0) {
 } else {
     $id=intval($_GET['id']);
     date_default_timezone_set('Asia/Kolkata');
-    $currentTime = date('d-m-Y h:i:s A', time());
+    $currentTime = date('Y-m-d');
     if(isset($_POST['submit'])) {
         $coursecode=$_POST['coursecode'];
         $coursename=$_POST['coursename'];
-        $courseunit=$_POST['courseunit'];
+        // $courseunit=$_POST['courseunit'];
         $seatlimit=$_POST['seatlimit'];
-        $ret=mysqli_query($bd, "UPDATE course SET courseName = '$coursename',courseUnit = '$courseunit',noofSeats = '$seatlimit',update_date = '$currentTime' where id = '$id'");
+        $ret=mysqli_query($bd, "UPDATE course SET courseName = '$coursename',noofSeats = '$seatlimit',update_date = '$currentTime' where id = '$id'");
+        echo $ret;
         if($ret) {
             $_SESSION['msg']="Course Updated Successfully !!";
         } else {
@@ -79,10 +80,10 @@ $sql=mysqli_query($bd, "select * from course where id='$id'");
     <input type="text" class="form-control" id="coursename" name="coursename" placeholder="Course Name" value="<?php echo htmlentities($row['courseName']);?>" required />
   </div>
 
-<div class="form-group">
+<!-- <div class="form-group">
     <label for="courseunit">Course unit  </label>
     <input type="text" class="form-control" id="courseunit" name="courseunit" placeholder="Course Unit" value="<?php echo htmlentities($row['courseUnit']);?>" required />
-  </div>  
+  </div>   -->
 
 <div class="form-group">
     <label for="seatlimit">Seat limit  </label>

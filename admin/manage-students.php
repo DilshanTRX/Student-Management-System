@@ -31,7 +31,7 @@ if(isset($_GET['del']))
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
     <meta name="description" content="" />
     <meta name="author" content="" />
-    <title>Admin | Course</title>
+    <title>Admin | Manage Students</title>
     <link href="assets/css/bootstrap.css" rel="stylesheet" />
     <link href="assets/css/font-awesome.css" rel="stylesheet" />
     <link href="assets/css/style.css" rel="stylesheet" />
@@ -50,7 +50,7 @@ if(isset($_GET['del']))
         <div class="container">
               <div class="row">
                     <div class="col-md-12">
-                        <h1 class="page-head-line">Course  </h1>
+                        <h1 class="page-head-line">Manage Students</h1>
                     </div>
                 </div>
                 <div class="row" >
